@@ -2,6 +2,7 @@ package introsde.rest.client.xml;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -12,50 +13,54 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.glassfish.jersey.client.ClientConfig;
 import org.json.JSONException;
 import org.w3c.dom.NodeList;
-
-import introsde.rest.client.util.Request;
-import introsde.rest.client.util.Settings;
-import introsde.rest.client.util.XPathEvaluator;
+import org.xml.sax.InputSource;
 
 
 
 public class ClientXml {
 
-
-	public static String auxj;
-	public static String person_2;
-	public static int id;
-	public static int idreq7;
-
-	public static String mid,measureType;
-	public static int countR9;
-	public static String midR9;
-
-
 	public static ArrayList<String> measure = new ArrayList<String>();
-	private static String xmlFistPerson;
-	public static int firstPerson, lastPerson,newIdPerson;
-	private static FileWriter writer =null;
+	private static String xmlFistPerson, measure_id, measureType;
+	public static int firstPerson, lastPerson, newIdPerson, countMeasure, newcountMeasure;
+	private static FileWriter writer = null;
 
 	private static URI getBaseURI() {
-		return UriBuilder.fromUri(
-				"https://rodrigo-sestari.herokuapp.com/assignment2").build();
+		return UriBuilder.fromUri("https://rodrigo-sestari.herokuapp.com/assignment2").build();
 	}
-	private static void write(String line){
+
+	public static NodeList getNodes(String source, String query) throws Exception {
+
+		InputSource input_source = new InputSource(new StringReader(source));
+
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		org.w3c.dom.Document document = db.parse(input_source);
+
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xpath = xpathFactory.newXPath();
+
+		NodeList nl = (NodeList) xpath.evaluate(query, document, XPathConstants.NODESET);
+		return nl;
+	}
+
+	private static void write(String line) {
 		try {
 			writer.append(line + " \n");
 		} catch (IOException e) {
 			e.printStackTrace();
-		}  	
+		}
 	}
 
 	public static void main(String[] args) throws Exception {
-
-
 
 		writer = new FileWriter("resources/client-server-xml.log");
 		try {
@@ -68,8 +73,8 @@ public class ClientXml {
 				request5();
 				request6();
 				request7();
-				// request8();
-				// request9();
+				request8();
+				request9();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -96,7 +101,7 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person");
 
-		write("Request #1: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		write("\n \n Request #1: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get(); //content-type request //accept accept
 		int httpStatus =response.getStatus(); 
@@ -104,16 +109,16 @@ public class ClientXml {
 		String xml = response.readEntity(String.class);
 
 
-		NodeList n = XPathEvaluator.getNodes(xml, "//person");
+		NodeList n = getNodes(xml, "//person");
 		if (n.getLength() > 2) {
 			write("=> Result:OK"); 
 		} else {
 			write("=> Result:ERROR");
 		}
 
-		NodeList n1 = XPathEvaluator.getNodes(xml, "//person[1]/idPerson/text()");
+		NodeList n1 = getNodes(xml, "//person[1]/idPerson/text()");
 		firstPerson = Integer.parseInt(n1.item(0).getNodeValue());
-		NodeList n2 = XPathEvaluator.getNodes(xml, "//person[last()]/idPerson/text()");
+		NodeList n2 = getNodes(xml, "//person[last()]/idPerson/text()");
 		lastPerson = Integer.parseInt(n2.item(0).getNodeValue());
 
 		write("=> HTTP Status: " +httpStatus);
@@ -135,7 +140,7 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+firstPerson);
 
-		write("Request #2: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		write("\n \n Request #2: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get(); //content-type request //accept accept
 		int httpStatus =response.getStatus(); 
@@ -165,9 +170,9 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+firstPerson);
 
-		write("Request #3: [PUT] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		write("\n \n Request #3: [PUT] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
-		NodeList nl = XPathEvaluator.getNodes(xmlFistPerson, "//firstname/text()");
+		NodeList nl = getNodes(xmlFistPerson, "//firstname/text()");
 		String name = nl.item(0).getNodeValue();
 		xmlFistPerson = xmlFistPerson.replace(name,  "Changed Name");
 
@@ -203,13 +208,13 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person");
 
-		write("Request #4: [POST] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		write("\n \n Request #4: [POST] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xmlFistPerson));
 		int httpStatus =response.getStatus(); 
 		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		String xml = response.readEntity(String.class);
-		NodeList n1 = XPathEvaluator.getNodes(xml, "//idPerson/text()");
+		NodeList n1 = getNodes(xml, "//idPerson/text()");
 		newIdPerson = Integer.parseInt(n1.item(0).getNodeValue());
 
 		if ((httpStatus == 200) || (httpStatus == 201) || (httpStatus== 202)) {
@@ -217,6 +222,7 @@ public class ClientXml {
 		} else {
 			write("=> Result:ERROR");
 		}
+		write("=> HTTP Status: " +httpStatus);
 		write(xml);
 	}
 
@@ -233,15 +239,18 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson);
 
-		writer.append("Request #5: [DELETE] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		write("\n \n Request #5: [DELETE] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).delete();
 		int httpStatus =response.getStatus(); 
-		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		String xml = response.readEntity(String.class);
+		write("=> Result:"+responseStatus);
+		write("=> HTTP Status: " +httpStatus);
 
 
 		service = client.target(getBaseURI()).path("person/"+newIdPerson);
+		write("\n Request #5: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		httpStatus =response.getStatus();
 		xml = response.readEntity(String.class);
@@ -251,6 +260,7 @@ public class ClientXml {
 		} else {
 			write("=> Result:ERROR");
 		}
+		write("=> HTTP Status: " +httpStatus);
 
 	}
 
@@ -269,21 +279,22 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("MeasureType/");
 
-		writer.append("Request #6: [POST] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		write("\n \n Request #6: [POST] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).delete();
-		//int httpStatus =response.getStatus(); 
+		int httpStatus =response.getStatus(); 
 		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		String xml = response.readEntity(String.class);
 
-		NodeList n1 = XPathEvaluator.getNodes(xml, "//MeasureType");
+		NodeList n1 = getNodes(xml, "//MeasureType");
 		if (n1.getLength() > 2) {
 			write("=> Result:OK");
 		} else {
 			write("=> Result:ERROR");
 		}
+		write("=> HTTP Status: " +httpStatus);
 
-		n1 = XPathEvaluator.getNodes(xml, "//MeasureType/text()");
+		n1 = getNodes(xml, "//MeasureType/text()");
 		for (int i = 0; i < n1.getLength(); i++) {
 			String aux = n1.item(i).getNodeValue();
 			measure.add(aux);
@@ -291,6 +302,33 @@ public class ClientXml {
 
 	}
 
+	private static boolean auxrequest7(int idPerson) throws IOException, Exception{
+		ClientConfig clientConfig = new ClientConfig();
+		Client client = ClientBuilder.newClient(clientConfig);
+		WebTarget service =null;
+		Response response  =null;
+		String xml = null;
+		boolean trovato = false;
+		for (String mt : measure) {
+			service = client.target(getBaseURI()).path("person/"+idPerson+"/"+mt);
+			response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
+			xml = response.readEntity(String.class);
+
+			NodeList n1 = getNodes(xml, "//measure");
+			if((!trovato) && n1.getLength()>1){
+
+				n1 = getNodes(xml, "//measure/mid/text()");
+				measure_id = n1.item(0).getNodeValue();
+
+				n1 = getNodes(xml, "//measure/measureType/text()");
+				measureType = n1.item(0).getNodeValue();
+				newIdPerson = idPerson;
+
+				trovato = true;
+			}
+		}
+		return trovato;
+	}
 
 	/**
 	 * Step 3.7. Send R#6 (GET BASE_URL/person/{id}/{measureType}) for the first person you obtained at the 
@@ -303,148 +341,97 @@ public class ClientXml {
 	 */
 	public static void request7() throws IOException, Exception {
 
-		boolean at_least_one = true;
-		Request r = null;
 
-		for (String mt : measure) {
-			r = new Request("/person/" + firstPerson + "/" + mt, "GET", Settings.APP_XML);
-			Request.setRequest_number(7);
-			String x = r.doRequest("");
+		write("\n \n Request #7: [GET] [person] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
-			NodeList n1 = XPathEvaluator.getNodes(x, "//measure");
-			if(at_least_one && n1.getLength()>1){
-				idreq7 = firstPerson;
-				at_least_one = false;
-				n1 = XPathEvaluator.getNodes(x, "//measure/mid/text()");
-				mid = n1.item(0).getNodeValue();
-
-				n1 = XPathEvaluator.getNodes(x, "//measure/measureType/text()");
-				measureType = n1.item(0).getNodeValue();
-				r.setResult("OK");
-				r.printReq();
-			}
-		}
-		if(at_least_one){
-			r.setResult("ERROR");
-			r.printReq();
+		boolean a1 = auxrequest7(firstPerson);
+		boolean a2 = auxrequest7(lastPerson);
+		if (a1 && a2){
+			write("=> Result:OK");
+		} else {
+			write("=> Result:ERROR");
 		}
 	}
 
 	/**
-	 * Request #8: Saves a new value for the {measureType} (e.g. weight) of person identified by {id}
-	 * and archives the old value in the history
+	 * Step 3.8. Send R#7 (GET BASE_URL/person/{id}/{measureType}/{mid}) for the stored measure_id and measureType.
+	 *  If the response is 200, result is OK, else is ERROR.
+	 * @throws IOException
+	 * @throws Exception
 	 */
 	public static void request8() throws IOException, Exception {
-		Request r = new Request("/person/" + idreq7 + "/"+ measureType+"/"+mid, "GET", Settings.APP_XML);
-		String j = r.doRequest("");
-		if(r.getRespCode() == 200)
-			r.setResult("OK");
-		else
-			r.setResult("ERROR");
 
-		r.printReq();
+
+		ClientConfig clientConfig = new ClientConfig();
+		Client client = ClientBuilder.newClient(clientConfig);
+		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType+"/"+measure_id);
+
+		write("\n \n Request #8: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+
+		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
+		int httpStatus =response.getStatus(); 
+		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		//String xml = response.readEntity(String.class);
+
+		if(httpStatus == 200){
+			write("=> Result:OK");
+		} else {
+			write("=> Result:ERROR");
+		}
+		write("=> HTTP Status: " +httpStatus);
 	}
 
 	/**
-	 * Request #9: Returns the list of measures our model supports
+	 * Step 3.9. Choose a measureType from measure_types and send the request R#6 (GET BASE_URL/person/{first_person_id}/{measureType}) 
+	 * and save count value (e.g. 5 measurements). Then send R#8 (POST BASE_URL/person/{first_person_id}/{measureTypes}) with 
+	 * the measurement specified below. Follow up with another R#6 as the first to check the new count value.
+	 *  If it is 1 measure more - print OK, else print ERROR. Remember, first with JSON and then with XML as content-types
+	 *  
+	 * @throws IOException
+	 * @throws Exception
 	 */
 	public static void request9() throws IOException, Exception {
 
-		Request r = new Request("/person/" + idreq7 + "/"+ measure.get(0), "GET", Settings.APP_XML);
-		String x = r.doRequest("");
-		NodeList n1 = XPathEvaluator.getNodes(x, "//measure");
-		countR9 = n1.getLength();
-		r.setResult("OK");
-		r.printReq();
 
-		Request r2 = new Request("/person/" + idreq7 + "/"+ measure.get(0), "POST", Settings.APP_XML);
-		Request.setRequest_number(9);
-		x = r2.doRequest("<measure>\n" +
-				"            <value>72</value>\n" +
-				"            <created>2011-12-09</created>\n" +
-				"        </measure>");
-		r2.setResult("OK");
-		n1 = XPathEvaluator.getNodes(x, "//measure/mid/text()");
-		midR9 = n1.item(0).getNodeValue();
-		r2.printReq();
+		ClientConfig clientConfig = new ClientConfig();
+		Client client = ClientBuilder.newClient(clientConfig);
+		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType+"/"+measure_id);
 
-		r = new Request("/person/" + idreq7 + "/"+ measure.get(0), "GET", Settings.APP_XML);
-		Request.setRequest_number(9);
-		x = r.doRequest("");
-		n1 = XPathEvaluator.getNodes(x, "//measure");
-		if(n1.getLength() == countR9+1)
-			r.setResult("OK");
-		else
-			r.setResult("ERROR");
-		r.printReq();
-	}
+		write("\n \n Request #9: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
-	/**
-	 * Request #10: Updates the value for the {measureType} (e.g., weight) identified by {mid},
-	 * related to the person identified by {id}
-	 */
-	public static void request10() throws IOException, Exception {
+		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
+		int httpStatus =response.getStatus(); 		    		
+		String xml = response.readEntity(String.class);
+		NodeList n1 = getNodes(xml, "//measure");
+		countMeasure = n1.getLength();
+		write("=> Result:OK");		
+		write("=> HTTP Status: " +httpStatus);
 
-		Request r = new Request("/person/" + idreq7 + "/" + measureType + "/" + midR9, "GET", Settings.APP_XML);
-		Request.setRequest_number(10);
-		r.doRequest("");
-		r.setResult("OK");
-		r.printReq();
 
-		r = new Request("/person/" + idreq7 + "/" + measureType + "/" + midR9, "PUT", Settings.APP_XML);
-		Request.setRequest_number(10);
-		try {
-			r.doRequest("<measure>\n<value>80</value>\n<created>2011-12-09</created>\n</measure>");
-			r.setResult("OK");
-			r.printReq();
-		} catch (Exception e) {
-			r.setResult("ERROR");
-			r.printReq();
-			return;
+		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
+
+		write("\n Request #9: [POST] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		xml = "<measure> <value>99</value> <created>2015-11-05</created> </measure>";
+		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xml));
+		httpStatus =response.getStatus();
+		write("=> Result:OK");		
+		write("=> HTTP Status: " +httpStatus);
+
+
+		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType+"/"+measure_id);
+
+		write("\n Request #9: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
+		httpStatus =response.getStatus(); 		    		
+		xml = response.readEntity(String.class);
+		n1 = getNodes(xml, "//measure");
+		newcountMeasure = n1.getLength();
+		if (newcountMeasure == countMeasure){
+			write("=> Result:ERROR");
+		}else{
+			write("=> Result:OK");
 		}
+		write("=> HTTP Status: " +httpStatus);
 
-		r = new Request("/person/" + idreq7 + "/" + measureType + "/" + midR9, "GET", Settings.APP_XML);
-		Request.setRequest_number(10);
-		String x = r.doRequest("");
-		NodeList n1 = XPathEvaluator.getNodes(x, "//measure/value/text()");
-		String val = n1.item(0).getNodeValue();
-		if(val.equals("80"))
-			r.setResult("OK");
-		else
-			r.setResult("ERROR");
-
-		r.printReq();
-	}
-
-	/**
-	 * Request #11: Returns the history of {measureType} (e.g., weight) for person {id} in the specified range of date
-	 */
-	public static void request11() throws IOException, Exception {
-		Request r = new Request("/person/" + idreq7 + "/"+ measureType+"/?before=10-12-2012&after=21-12-2012", "GET", Settings.APP_XML);
-		String x = r.doRequest("");
-		NodeList n1 = XPathEvaluator.getNodes(x, "//measure");
-		if (n1.getLength()>=1 && (r.getRespCode() == 200 || r.getRespCode() == 201 || r.getRespCode() == 202)) {
-			r.setResult("OK");
-		} else {
-			r.setResult("ERROR");
-		}
-		r.printReq();
-	}
-
-	/**
-	 * Request #12: Retrieves people whose {measureType} (e.g., weight) value is in
-	 * the [{min},{max}] range (if only one for the query params is provided, use only that)
-	 */
-	public static void request12() throws IOException, Exception {
-
-		Request r = new Request("/person?measureType=heigth&max=150&min=190", "GET", Settings.APP_XML);
-		String x = r.doRequest("");
-		NodeList n1 = XPathEvaluator.getNodes(x, "//person");
-		if (n1.getLength()>=1 && (r.getRespCode() == 200 || r.getRespCode() == 201 || r.getRespCode() == 202)) {
-			r.setResult("OK");
-		} else {
-			r.setResult("ERROR");
-		}
-		r.printReq();
 	}
 }
