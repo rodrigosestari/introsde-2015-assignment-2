@@ -245,7 +245,7 @@ public class ClientXml {
 		int httpStatus =response.getStatus(); 
 		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		String xml = response.readEntity(String.class);
-	    write("=> Result:"+responseStatus);
+		write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
 
 
@@ -313,19 +313,23 @@ public class ClientXml {
 			service = client.target(getBaseURI()).path("person/"+idPerson+"/"+mt);
 			response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 			xml = response.readEntity(String.class);
+			try {
+				NodeList n1 = getNodes(xml, "//measure");
+				if((!trovato) && n1.getLength()>1){
 
-			NodeList n1 = getNodes(xml, "//measure");
-			if((!trovato) && n1.getLength()>1){
+					n1 = getNodes(xml, "//measure/mid/text()");
+					measure_id = n1.item(0).getNodeValue();
 
-				n1 = getNodes(xml, "//measure/mid/text()");
-				measure_id = n1.item(0).getNodeValue();
+					n1 = getNodes(xml, "//measure/measureType/text()");
+					measureType = n1.item(0).getNodeValue();
+					newIdPerson = idPerson;
 
-				n1 = getNodes(xml, "//measure/measureType/text()");
-				measureType = n1.item(0).getNodeValue();
-				newIdPerson = idPerson;
-
-				trovato = true;
+					trovato = true;
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
+
 		}
 		return trovato;
 	}

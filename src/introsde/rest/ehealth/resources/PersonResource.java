@@ -60,7 +60,7 @@ public class PersonResource {
 			person = this.getPersonById(id);
 
 			if ((person == null) || (person.getIdPerson() == null)){
-				return Response.noContent().build();
+				return Response.status(Response.Status.NOT_FOUND).build();
 			} else {
 				return Response.ok().entity(person).build();
 			}
