@@ -294,7 +294,7 @@ public class ClientXml {
 		}
 		write("=> HTTP Status: " +httpStatus);
 
-		n1 = getNodes(xml, "//MeasureType/text()");
+		n1 = getNodes(xml, "//measureType/text()");
 		for (int i = 0; i < n1.getLength(); i++) {
 			String aux = n1.item(i).getNodeValue();
 			measure.add(aux);
