@@ -24,6 +24,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import introsde.rest.ehealth.bean.MeasureBean;
 import introsde.rest.ehealth.bean.MeasureHistoryBean;
 import introsde.rest.ehealth.bean.MeasureTypeBean;
 import introsde.rest.ehealth.bean.PeopleBean;
@@ -206,7 +207,7 @@ public class PersonCollectionResource {
 	@Path("{personId}/{measureType}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response newMeasure(@PathParam("personId") int id, @PathParam("measureType") String md, MeasureTypeBean mtb)
+	public Response newMeasure(@PathParam("personId") int id, @PathParam("measureType") String md, MeasureBean mb)
 			throws IOException {
 
 		MeasureHistoryBean mhb = null;
@@ -227,10 +228,10 @@ public class PersonCollectionResource {
 			}
 
 			MeasureHistory mh = new MeasureHistory();
-			mh.setCreated(new Date());
+			mh.setCreated(Person.stringToDate(mb.getCreated()));
 			mh.setMeasureDefinition(m);
 			mh.setPerson(p);
-			mh.setValue(String.valueOf(mtb.getValue()));
+			mh.setValue(String.valueOf(mb.getValue()));
 
 			mh = MeasureHistory.insertMeasure(mh);
 			if (mh != null) {

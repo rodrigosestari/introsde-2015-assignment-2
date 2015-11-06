@@ -255,7 +255,7 @@ public class ClientXml {
 		httpStatus =response.getStatus();
 		xml = response.readEntity(String.class);
 
-		if (httpStatus== 404) { //500
+		if (httpStatus== 404) { 
 			write("=> Result:OK");
 		} else {
 			write("=> Result:ERROR");
@@ -311,8 +311,12 @@ public class ClientXml {
 		boolean trovato = false;
 		for (String mt : measure) {
 			service = client.target(getBaseURI()).path("person/"+idPerson+"/"+mt);
+			write("\n Request #7: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 			response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
+			int httpStatus =response.getStatus(); 
 			xml = response.readEntity(String.class);
+		
+			
 			try {
 				NodeList n1 = getNodes(xml, "//measure");
 				if((!trovato) && n1.getLength()>1){
@@ -320,8 +324,7 @@ public class ClientXml {
 					n1 = getNodes(xml, "//measure/mid/text()");
 					measure_id = n1.item(0).getNodeValue();
 
-					n1 = getNodes(xml, "//measure/measureType/text()");
-					measureType = n1.item(0).getNodeValue();
+					measureType = mt;
 					newIdPerson = idPerson;
 
 					trovato = true;
@@ -329,8 +332,14 @@ public class ClientXml {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
+			if(trovato)
+			    write("=> Result:OK");
+			    else
+			    	write("=> Result:ERROR");
+			write("=> HTTP Status: " +httpStatus);
 
 		}
+		
 		return trovato;
 	}
 
@@ -346,8 +355,8 @@ public class ClientXml {
 	public static void request7() throws IOException, Exception {
 
 
-		write("\n \n Request #7: [GET] [person] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
-
+		
+		write("\n");
 		boolean a1 = auxrequest7(firstPerson);
 		boolean a2 = auxrequest7(lastPerson);
 		if (a1 && a2){
@@ -408,7 +417,8 @@ public class ClientXml {
 		String xml = response.readEntity(String.class);
 		NodeList n1 = getNodes(xml, "//measure");
 		countMeasure = n1.getLength();
-		write("=> Result:OK");		
+		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
 
 
@@ -418,7 +428,8 @@ public class ClientXml {
 		xml = "<measure> <value>99</value> <created>2015-11-05</created> </measure>";
 		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xml));
 		httpStatus =response.getStatus();
-		write("=> Result:OK");		
+		responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
 
 
