@@ -2,7 +2,6 @@ package introsde.rest.ehealth.resources;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -26,7 +25,6 @@ import javax.ws.rs.core.UriInfo;
 
 import introsde.rest.ehealth.bean.MeasureBean;
 import introsde.rest.ehealth.bean.MeasureHistoryBean;
-import introsde.rest.ehealth.bean.MeasureTypeBean;
 import introsde.rest.ehealth.bean.PeopleBean;
 import introsde.rest.ehealth.model.MeasureDefinition;
 import introsde.rest.ehealth.model.MeasureHistory;

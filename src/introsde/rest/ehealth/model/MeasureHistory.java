@@ -230,9 +230,9 @@ public class MeasureHistory implements Serializable {
 
 	public static MeasureHistory getMeasureTypeById(int id, String md, int idmh) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
-		//MeasureHistory ret = em.createNamedQuery("MeasureHistory.findPersonTypeID", MeasureHistory.class)
-			//	.setParameter("id", id).setParameter("md", md).setParameter("mid", idmh).getSingleResult();
-		MeasureHistory ret = em.find( MeasureHistory.class, idmh);
+		
+		MeasureHistory ret = em.createNamedQuery("MeasureHistory.findPersonTypeID", MeasureHistory.class)
+				.setParameter("id", id).setParameter("md", md).setParameter("idhm", idmh).getSingleResult();
 		LifeCoachDao.instance.closeConnections(em);
 		return ret;
 
