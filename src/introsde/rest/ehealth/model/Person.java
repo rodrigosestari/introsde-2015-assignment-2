@@ -88,6 +88,7 @@ public class Person implements Serializable {
 		PersonBean pb = null;
 		try {
 			Person p = getPersonById(personId);
+			if (p !=null){
 			pb = new PersonBean();
 			pb.setBirthdate(dateToString(p.getBirthdate()));
 			pb.setFirstname(p.getName());
@@ -96,6 +97,7 @@ public class Person implements Serializable {
 					.getHealthProfileFromMeasureList(MeasureHistory.getHealthMeasureHistoryOldPerson(personId)));
 
 			pb.setIdPerson(personId);
+			}
 		} catch (Exception e) {
 			pb = null;
 		}

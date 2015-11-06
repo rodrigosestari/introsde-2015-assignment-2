@@ -277,7 +277,7 @@ public class ClientXml {
 
 		ClientConfig clientConfig = new ClientConfig();
 		Client client = ClientBuilder.newClient(clientConfig);
-		WebTarget service = client.target(getBaseURI()).path("MeasureTypes/");
+		WebTarget service = client.target(getBaseURI()).path("measureTypes/");
 
 		write("\n \n Request #6: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 

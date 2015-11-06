@@ -117,7 +117,6 @@ public class PersonResource {
 	private PersonBean getPersonById(int personId) {
 		System.out.println("Reading person from DB with id: " + personId);
 		PersonBean person = Person.getPersonBeanById(personId);		
-		System.out.println("Person: " + person.toString());
 		return person;
 	}
 
