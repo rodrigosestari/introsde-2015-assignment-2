@@ -408,7 +408,7 @@ public class ClientXml {
 
 		ClientConfig clientConfig = new ClientConfig();
 		Client client = ClientBuilder.newClient(clientConfig);
-		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType+"/"+measure_id);
+		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
 		write("\n \n Request #9: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
@@ -425,15 +425,16 @@ public class ClientXml {
 		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
 		write("\n Request #9: [POST] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
-		xml = "<measure> <value>99</value> <created>2015-11-05</created> </measure>";
+		xml = "<measure> <value>34</value> <created>2015-11-05</created> </measure>";
 		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xml));
 		httpStatus =response.getStatus();
 		responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
+		write(xml);
 
 
-		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType+"/"+measure_id);
+		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
 		write("\n Request #9: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
@@ -441,7 +442,7 @@ public class ClientXml {
 		xml = response.readEntity(String.class);
 		n1 = getNodes(xml, "//measure");
 		newcountMeasure = n1.getLength();
-		if (newcountMeasure == countMeasure){
+		if (newcountMeasure > countMeasure){
 			write("=> Result:ERROR");
 		}else{
 			write("=> Result:OK");

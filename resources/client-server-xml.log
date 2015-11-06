@@ -1,0 +1,81 @@
+URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2 
+
+ 
+ Request #1: [GET] [/assignment2/person] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ 
+ Request #2: [GET] [/assignment2/person/8056] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ 
+ Request #3: [PUT] [/assignment2/person/8056] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 201 
+
+ 
+ Request #4: [POST] [/assignment2/person] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><person><idPerson>8203</idPerson><firstname>Rodrigo</firstname><lastname>Sestari</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person> 
+
+ 
+ Request #5: [DELETE] [/assignment2/person/8203] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ Request #5: [GET] [/assignment2/person/8203] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 404 
+
+ 
+ Request #6: [GET] [/assignment2/measureTypes/] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ 
+
+ Request #7: [GET] [/assignment2/person/8056/weigth] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:ERROR 
+=> HTTP Status: 200 
+
+ Request #7: [GET] [/assignment2/person/8056/heigth] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:ERROR 
+=> HTTP Status: 200 
+
+ Request #7: [GET] [/assignment2/person/8056/bloodpressure] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:ERROR 
+=> HTTP Status: 204 
+
+ Request #7: [GET] [/assignment2/person/7004/weigth] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ Request #7: [GET] [/assignment2/person/7004/heigth] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ Request #7: [GET] [/assignment2/person/7004/bloodpressure] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 204 
+=> Result:ERROR 
+
+ 
+ Request #8: [GET] [/assignment2/person/7004/weigth/3509] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ 
+ Request #9: [GET] [/assignment2/person/7004/weigth] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ Request #9: [POST] [/assignment2/person/7004/weigth] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
+
+ Request #9: [GET] [/assignment2/person/7004/weigth] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 200 
