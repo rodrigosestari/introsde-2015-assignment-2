@@ -286,7 +286,7 @@ public class ClientXml {
 		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		String xml = response.readEntity(String.class);
 
-		NodeList n1 = getNodes(xml, "//MeasureType");
+		NodeList n1 = getNodes(xml, "//measureType");
 		if (n1.getLength() > 2) {
 			write("=> Result:OK");
 		} else {

@@ -59,7 +59,7 @@ public class PersonResource {
 		try {
 			person = this.getPersonById(id);
 
-			if (person == null) {
+			if ((person == null) || (person.getIdPerson() == null)){
 				return Response.noContent().build();
 			} else {
 				return Response.ok().entity(person).build();

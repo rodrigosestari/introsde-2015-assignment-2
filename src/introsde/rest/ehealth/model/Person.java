@@ -96,7 +96,7 @@ public class Person implements Serializable {
 			pb.setHealthprofile(HealthProfile
 					.getHealthProfileFromMeasureList(MeasureHistory.getHealthMeasureHistoryOldPerson(personId)));
 
-			pb.setIdPerson(personId);
+			pb.setIdPerson(p.getIdPerson());
 			}
 		} catch (Exception e) {
 			pb = null;
