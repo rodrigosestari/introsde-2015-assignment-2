@@ -154,6 +154,7 @@ public class Person implements Serializable {
 		p.setLastname(pb.getLastname());
 		p.setName(pb.getFirstname());
 		p = insertPerson(p);
+		pb.setIdPerson(p.getIdPerson());
 		try {
 			HealthProfile hp = pb.getHealthprofile();
 			if ((null != hp) && (null != hp.getMeasure()) && (hp.getMeasure().size() > 0)){

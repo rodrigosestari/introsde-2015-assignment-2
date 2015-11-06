@@ -208,11 +208,11 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person");
 
-		write("\n \n Request #4: [POST] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		write("\n \n Request #4: [POST] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
-		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xmlFistPerson));
-		int httpStatus =response.getStatus(); 
-		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		String newPerson ="<person><firstname>Rodrigo</firstname><lastname>Sestari</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person>";
+		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(newPerson));
+		int httpStatus =response.getStatus();     		
 		String xml = response.readEntity(String.class);
 		NodeList n1 = getNodes(xml, "//idPerson/text()");
 		newIdPerson = Integer.parseInt(n1.item(0).getNodeValue());
@@ -245,7 +245,7 @@ public class ClientXml {
 		int httpStatus =response.getStatus(); 
 		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		String xml = response.readEntity(String.class);
-		write("=> Result:"+responseStatus);
+	    write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
 
 
@@ -255,7 +255,7 @@ public class ClientXml {
 		httpStatus =response.getStatus();
 		xml = response.readEntity(String.class);
 
-		if (httpStatus== 404) {
+		if (httpStatus== 404) { //500
 			write("=> Result:OK");
 		} else {
 			write("=> Result:ERROR");
@@ -279,9 +279,9 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("MeasureType/");
 
-		write("\n \n Request #6: [POST] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
+		write("\n \n Request #6: [GET] ["+service.getUri()+"] Accept: [APPLICATION_XML] Content-type: [MediaType.APPLICATION_XML]");
 
-		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).delete();
+		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		int httpStatus =response.getStatus(); 
 		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		String xml = response.readEntity(String.class);
