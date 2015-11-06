@@ -40,16 +40,18 @@ public class ClientXml {
 	public static NodeList getNodes(String source, String query) throws Exception {
 		NodeList nl = null;
 		try {
-			InputSource input_source = new InputSource(new StringReader(source));
+			if (!source.isEmpty()){
+				InputSource input_source = new InputSource(new StringReader(source));
 
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			org.w3c.dom.Document document = db.parse(input_source);
+				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				org.w3c.dom.Document document = db.parse(input_source);
 
-			XPathFactory xpathFactory = XPathFactory.newInstance();
-			XPath xpath = xpathFactory.newXPath();
+				XPathFactory xpathFactory = XPathFactory.newInstance();
+				XPath xpath = xpathFactory.newXPath();
 
-			 nl = (NodeList) xpath.evaluate(query, document, XPathConstants.NODESET);
+				nl = (NodeList) xpath.evaluate(query, document, XPathConstants.NODESET);
+			}
 		} catch (Exception e) {
 			nl =null;
 		}
@@ -120,9 +122,8 @@ public class ClientXml {
 
 		write("\n \n Request #1: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
 
-		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get(); //content-type request //accept accept
-		int httpStatus =response.getStatus(); 
-		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
+		int httpStatus =response.getStatus();     		
 		String xml = response.readEntity(String.class);
 
 
@@ -194,8 +195,6 @@ public class ClientXml {
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).put(Entity.xml(xmlFistPerson));
 		int httpStatus =response.getStatus(); 
-		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
-		//	String xml = response.readEntity(String.class);
 
 
 		if ((httpStatus == 201)){ //created
@@ -261,7 +260,7 @@ public class ClientXml {
 		int httpStatus =response.getStatus(); 
 		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
 		String xml = response.readEntity(String.class);
-		write("=> Result:"+responseStatus);
+		//	write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
 
 
@@ -298,8 +297,7 @@ public class ClientXml {
 		write("\n \n Request #6: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
-		int httpStatus =response.getStatus(); 
-		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		int httpStatus =response.getStatus();     		
 		String xml = response.readEntity(String.class);
 
 		NodeList n1 = getNodes(xml, "//measureType");
@@ -331,8 +329,8 @@ public class ClientXml {
 			response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 			int httpStatus =response.getStatus(); 
 			xml = response.readEntity(String.class);
-		
-			
+
+
 			try {
 				NodeList n1 = getNodes(xml, "//measure");
 				if((!trovato) && n1.getLength()>1){
@@ -348,14 +346,14 @@ public class ClientXml {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-			if(trovato)
-			    write("=> Result:OK");
-			    else
-			    	write("=> Result:ERROR");
+			//if(trovato)
+			//  write("=> Result:OK");
+			//else
+			//write("=> Result:ERROR");
 			write("=> HTTP Status: " +httpStatus);
 
 		}
-		
+
 		return trovato;
 	}
 
@@ -369,9 +367,6 @@ public class ClientXml {
 	 * @throws Exception
 	 */
 	public static void request7() throws IOException, Exception {
-
-
-		
 		write("\n");
 		boolean a1 = auxrequest7(firstPerson);
 		boolean a2 = auxrequest7(lastPerson);
@@ -399,8 +394,6 @@ public class ClientXml {
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		int httpStatus =response.getStatus(); 
-		//String responseStatus =response.getStatusInfo().getReasonPhrase();    		
-		//String xml = response.readEntity(String.class);
 
 		if(httpStatus == 200){
 			write("=> Result:OK");
@@ -434,7 +427,7 @@ public class ClientXml {
 		NodeList n1 = getNodes(xml, "//measure");
 		countMeasure = n1.getLength();
 		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
-		write("=> Result:"+responseStatus);
+		//	write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
 
 
@@ -445,7 +438,7 @@ public class ClientXml {
 		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xml));
 		httpStatus =response.getStatus();
 		responseStatus =response.getStatusInfo().getReasonPhrase();    		
-		write("=> Result:"+responseStatus);
+		//write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
 		write(xml);
 
