@@ -85,15 +85,21 @@ public class Person implements Serializable {
 	}
 
 	public static PersonBean getPersonBeanById(int personId) {
-		Person p = getPersonById(personId);
-		PersonBean pb = new PersonBean();
-		pb.setBirthdate(dateToString(p.getBirthdate()));
-		pb.setFirstname(p.getName());
-		pb.setLastname(p.getLastname());
-		pb.setHealthprofile(HealthProfile
-				.getHealthProfileFromMeasureList(MeasureHistory.getHealthMeasureHistoryOldPerson(personId)));
+		PersonBean pb = null;
+		try {
+			Person p = getPersonById(personId);
+			pb = new PersonBean();
+			pb.setBirthdate(dateToString(p.getBirthdate()));
+			pb.setFirstname(p.getName());
+			pb.setLastname(p.getLastname());
+			pb.setHealthprofile(HealthProfile
+					.getHealthProfileFromMeasureList(MeasureHistory.getHealthMeasureHistoryOldPerson(personId)));
 
-		pb.setIdPerson(personId);
+			pb.setIdPerson(personId);
+		} catch (Exception e) {
+			pb = null;
+		}
+	
 
 		return pb;
 
@@ -113,19 +119,24 @@ public class Person implements Serializable {
 		if ((null != list) && (list.size() > 0)) {
 			pbl = new ArrayList<PersonBean>();
 			for (Person p : list) {
-				PersonBean pb = new PersonBean();
-				pb.setBirthdate(dateToString(p.getBirthdate()));
-				pb.setFirstname(p.getName());
-				pb.setLastname(p.getLastname());
-				if (lastMeasure) {
-					pb.setHealthprofile(HealthProfile.getHealthProfileFromMeasureList(
-							MeasureHistory.getHealthMeasureHistoryOldPerson(p.getIdPerson())));
-				} else {
-					pb.setHealthprofile(HealthProfile.getHealthProfileFromMeasure(
-							MeasureHistory.getHealthMeasureHistoryById(p.getIdPerson())));
+				try {
+					PersonBean pb = new PersonBean();
+					pb.setBirthdate(dateToString(p.getBirthdate()));
+					pb.setFirstname(p.getName());
+					pb.setLastname(p.getLastname());
+					if (lastMeasure) {
+						pb.setHealthprofile(HealthProfile.getHealthProfileFromMeasureList(
+								MeasureHistory.getHealthMeasureHistoryOldPerson(p.getIdPerson())));
+					} else {
+						pb.setHealthprofile(HealthProfile.getHealthProfileFromMeasure(
+								MeasureHistory.getHealthMeasureHistoryById(p.getIdPerson())));
+					}
+					pb.setIdPerson(p.getIdPerson());
+					pbl.add(pb);
+				} catch (Exception e) {
 				}
-				pb.setIdPerson(p.getIdPerson());
-				pbl.add(pb);
+		
+				
 			}
 		}
 		LifeCoachDao.instance.closeConnections(em);

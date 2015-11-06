@@ -45,7 +45,9 @@ public class PersonResource {
 	}
 
 	/**
-	 * Request #2: GET
+	 * Request #2: GET /person/{id} should give all the personal information
+	 * plus current measures of person identified by {id} (e.g., current
+	 * measures means current health profile)
 	 * 
 	 * @return
 	 */
@@ -97,22 +99,22 @@ public class PersonResource {
 	 * {id} from the system
 	 */
 	@DELETE
-	public void deletePerson() {
-		Person c = Person.getPersonById(id);
-		if (c == null)
-			throw new RuntimeException("Delete: Person with " + id + " not found");
-		Person.removePerson(c);
+	public Response deletePerson() {
+		try {
+			Person c = Person.getPersonById(id);
+			if (c == null)
+					return Response.noContent().build();
+		
+			Person.removePerson(c);
+		} catch (Exception e) {
+			return Response.serverError().build();
+		}
+		
+		return Response.ok().build();
 	}
 
-	/**
-	 * Request #2: GET /person/{id} should give all the personal information
-	 * plus current measures of person identified by {id} (e.g., current
-	 * measures means current health profile)
-	 * 
-	 * @param personId
-	 * @return
-	 */
-	public PersonBean getPersonById(int personId) {
+
+	private PersonBean getPersonById(int personId) {
 		System.out.println("Reading person from DB with id: " + personId);
 		PersonBean person = Person.getPersonBeanById(personId);		
 		System.out.println("Person: " + person.toString());
