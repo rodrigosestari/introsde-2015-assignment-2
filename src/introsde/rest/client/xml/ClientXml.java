@@ -61,6 +61,7 @@ public class ClientXml {
 
 	private static void write(String line) {
 		try {
+			System.out.println(line);
 			writer.append(line + " \n");
 		} catch (IOException e) {
 			e.printStackTrace();
