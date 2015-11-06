@@ -337,10 +337,12 @@ public class ClientXml {
 				if((!trovato) && n1.getLength()>1){
 
 					n1 = getNodes(xml, "//measure/mid/text()");
-					measure_id = n1.item(0).getNodeValue();
-
 					measureType = mt;
 					newIdPerson = idPerson;
+					
+					measure_id = n1.item(0).getNodeValue();
+
+					
 
 					trovato = true;
 				}

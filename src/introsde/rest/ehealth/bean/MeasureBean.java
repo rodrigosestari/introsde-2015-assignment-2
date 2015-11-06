@@ -16,17 +16,17 @@ import javax.xml.bind.annotation.XmlAccessType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "mid", "value", "created" })
 public class MeasureBean {
-	private int mid;
+	private Integer mid;
 
 	private double value;
 
 	private String created;
 
-	public int getMid() {
+	public Integer getMid() {
 		return mid;
 	}
 
-	public void setMid(int mid) {
+	public void setMid(Integer mid) {
 		this.mid = mid;
 	}
 

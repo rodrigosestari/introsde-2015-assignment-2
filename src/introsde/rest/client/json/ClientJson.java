@@ -66,7 +66,7 @@ public class ClientJson {
 				write(" \n -------------");
 				request9();
 				write(" \n END");
-				System.out.println("END client XML");
+				System.out.println("END client JSON");
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -209,13 +209,24 @@ public class ClientJson {
 
 		write("\n \n Request #4: [POST] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
 
-		String newPerson ="{ \"firstname\": \"Rodrigo\", \"lastname\": \"JSON\", \"birthdate\": \"2000-03-22\",\n"
-				+ "		\"healthProfile\" : {\"measure\": [\n"
-				+ "		{ \"created\": \"2015-10-10\", \"value\": 34.8, \"measureType\": \"weigth\" },\n"
-				+ "		{  \"created\": \"2015-10-10\", \"value\": 173, \"measureType\": \"heigth\"  }"
-				+ "		]}"
-				+ "}";;
-
+		String newPerson = "{ "
+				+" \"healthProfile\": { "
+				+" \"measureType\": [ "
+				+" { "
+				+" \"measure\": \"weigth\", "
+				+" \"value\": 78.9 "
+				+" }, "
+				+" { "
+				+" \"measure\": \"heigth\", "
+				+" \"value\": 129.8 "
+				+" } "
+				+"  ] "
+				+" }, "
+				+" \"lastname\": \"Caprese\", "
+				+" \"birthdate\": \"2016-03-22\", "
+				+" \"firstname\": \"Changed Name\" "
+				+" } ";
+				
 				Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(Entity.json(newPerson));
 				int httpStatus =response.getStatus();     		
 				String json = response.readEntity(String.class);
@@ -295,7 +306,7 @@ public class ClientJson {
 		String json = response.readEntity(String.class);
 
 		JSONObject j = new JSONObject(json);
-		JSONArray ja = j.getJSONArray("MeasureType");
+		JSONArray ja = j.getJSONArray("measureType");
 		if (ja.length() > 2) {
 			write("=> Result:OK");
 		} else {
@@ -334,10 +345,13 @@ public class ClientJson {
 				JSONArray ja = jo.getJSONArray("measure");
 				if((!trovato) && ja.length() >1){
 
-					measure_id = ja.getJSONObject(0).getString("mid");
-
 					measureType = mt;
 					newIdPerson = idPerson;
+					
+					
+					measure_id = String.valueOf(ja.getJSONObject(0).getInt("mid"));
+
+					
 
 					trovato = true;
 				}
@@ -440,7 +454,13 @@ public class ClientJson {
 		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
 		write("\n Request #9: [POST] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
-		json ="{  \"value\": 72, \"measureType\": \"2015-10-10\"  }";
+		json =
+		 "{ "
+    	+ " \"value\": 44.1, "
+    	+ " \"created\": \"2015-02-17\" "
+       +"}  ";
+
+				
 		response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(Entity.json(json));
 		httpStatus =response.getStatus();
 		responseStatus =response.getStatusInfo().getReasonPhrase();    		
