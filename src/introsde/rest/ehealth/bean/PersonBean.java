@@ -1,4 +1,6 @@
-package introsde.rest.ehealth.model;
+package introsde.rest.ehealth.bean;
+
+import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,8 +11,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "person")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idPerson", "firstname", "lastname", "birthdate", "healthprofile" })
-public class PersonBean {
+public class PersonBean implements Serializable {
 
+
+	private static final long serialVersionUID = 8987951899033020232L;
 	private Integer idPerson;
 	private String firstname;
 	private String lastname;

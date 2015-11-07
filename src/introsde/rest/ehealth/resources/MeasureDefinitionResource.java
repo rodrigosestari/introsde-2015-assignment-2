@@ -30,6 +30,7 @@ public class MeasureDefinitionResource {
 	 * model supports in the following formats:
 	 * 
 	 * @return
+	 * list of measure types
 	 */
 	@GET
 	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -43,7 +44,7 @@ public class MeasureDefinitionResource {
 			mdb.setMeasureType(MeasureDefinitionBean.getAll());
 			
 			if (null == mdb.getMeasureType() ) {
-				return Response.noContent().build();
+				return Response.status(Response.Status.NOT_FOUND).build();
 			} else {
 				return Response.ok().entity(mdb).build();
 			}

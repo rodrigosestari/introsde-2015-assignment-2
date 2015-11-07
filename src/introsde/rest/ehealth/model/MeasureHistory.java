@@ -34,11 +34,13 @@ import introsde.rest.ehealth.dao.LifeCoachDao;
 @NamedQueries({ @NamedQuery(name = "MeasureHistory.findAll", query = "SELECT h FROM MeasureHistory h"),
 		@NamedQuery(name = "MeasureHistory.findPerson", query = "SELECT h FROM MeasureHistory h WHERE h.person.idPerson = :id "),
 		@NamedQuery(name = "MeasureHistory.findOldMeasurePerson", query = "SELECT h FROM MeasureHistory h WHERE h.person.idPerson = :id GROUP BY h.measureDefinition, h.person ORDER BY h.idMeasureHistory DESC"),
-		@NamedQuery(name = "MeasureHistory.findPersonTypeID",     query = "SELECT h FROM MeasureHistory h WHERE h.person.idPerson = :id and h.measureDefinition.measureName = :md and h.idMeasureHistory = :idhm"),
+		@NamedQuery(name = "MeasureHistory.findPersonTypeID", query = "SELECT h FROM MeasureHistory h WHERE h.person.idPerson = :id and h.measureDefinition.measureName = :md and h.idMeasureHistory = :idhm"),
 		@NamedQuery(name = "MeasureHistory.findPersonDefinition", query = "SELECT h FROM MeasureHistory h WHERE h.person.idPerson = :id and h.measureDefinition.measureName = :md") })
 @XmlRootElement
 public class MeasureHistory implements Serializable {
-	private static final long serialVersionUID = 1L;
+	
+
+	private static final long serialVersionUID = 3691697186849968325L;
 
 	@Id
 	@GeneratedValue(generator = "sqlite_mhistory")
@@ -105,7 +107,13 @@ public class MeasureHistory implements Serializable {
 		this.person = person;
 	}
 
-	// database operations
+	/**
+	 * get measure by id
+	 * 
+	 * @param id
+	 *            id measure
+	 * @return object MeasureHistory
+	 */
 	public static MeasureHistory getHealthMeasureHistoryById(int id) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		MeasureHistory p = em.find(MeasureHistory.class, id);
@@ -113,6 +121,13 @@ public class MeasureHistory implements Serializable {
 		return p;
 	}
 
+	/**
+	 * It takes latest measures by type from person
+	 * 
+	 * @param idPerson
+	 *            id person
+	 * @return list of measure
+	 */
 	public static List<MeasureHistory> getHealthMeasureHistoryOldPerson(int idPerson) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 
@@ -123,6 +138,11 @@ public class MeasureHistory implements Serializable {
 		return pd;
 	}
 
+	/**
+	 * get all MeasureHistory
+	 * 
+	 * @return list of MeasureHistory
+	 */
 	public static List<MeasureHistory> getAll() {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		List<MeasureHistory> list = em.createNamedQuery("HealthMeasureHistory.findAll", MeasureHistory.class)
@@ -131,6 +151,13 @@ public class MeasureHistory implements Serializable {
 		return list;
 	}
 
+	/**
+	 * get all measure from person
+	 * 
+	 * @param idPerson
+	 *            id person
+	 * @return list of MeasureHistory
+	 */
 	public static List<MeasureHistory> getAllbyPerson(int idPerson) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		List<MeasureHistory> list = null;
@@ -141,6 +168,13 @@ public class MeasureHistory implements Serializable {
 		return list;
 	}
 
+	/**
+	 * insert a new MeasureHistory
+	 * 
+	 * @param p
+	 *            object MeasureHistory to insert
+	 * @return object MeasureHistory inserted
+	 */
 	public static MeasureHistory insertHealthMeasureHistory(MeasureHistory p) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -156,6 +190,13 @@ public class MeasureHistory implements Serializable {
 		return p;
 	}
 
+	/**
+	 * update a measure
+	 * 
+	 * @param p
+	 *            object MeasureHistory to update
+	 * @return object MeasureHistory updated
+	 */
 	public static MeasureHistory updateHealthMeasureHistory(MeasureHistory p) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -171,6 +212,12 @@ public class MeasureHistory implements Serializable {
 		return p;
 	}
 
+	/**
+	 * remove a measure
+	 * 
+	 * @param p
+	 *            object MeasureHistory to remove
+	 */
 	public static void removeHealthMeasureHistory(MeasureHistory p) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -186,6 +233,15 @@ public class MeasureHistory implements Serializable {
 		LifeCoachDao.instance.closeConnections(em);
 	}
 
+	/**
+	 * get all MeasureBean from person and type
+	 * 
+	 * @param id
+	 *            id person
+	 * @param md
+	 *            measure type
+	 * @return list of MeasureBean
+	 */
 	public static List<MeasureHistory> getAllForMeasureType(int id, String md) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		List<MeasureHistory> list = em.createNamedQuery("MeasureHistory.findPersonDefinition", MeasureHistory.class)
@@ -195,6 +251,15 @@ public class MeasureHistory implements Serializable {
 
 	}
 
+	/**
+	 * get all MeasureBean from person and type
+	 * 
+	 * @param id
+	 *            id person
+	 * @param md
+	 *            measure type
+	 * @return list of MeasureBean
+	 */
 	public static List<MeasureBean> getBeanAllForMeasureType(int id, String md) {
 		List<MeasureHistory> mhl = getAllForMeasureType(id, md);
 		ArrayList<MeasureBean> mbl = new ArrayList<MeasureBean>();
@@ -210,6 +275,13 @@ public class MeasureHistory implements Serializable {
 
 	}
 
+	/**
+	 * insert a new measure
+	 * 
+	 * @param m
+	 *            object MeasureHistory to insert
+	 * @return object MeasureHistory inserted
+	 */
 	public static MeasureHistory insertMeasure(MeasureHistory m) {
 
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
@@ -228,14 +300,59 @@ public class MeasureHistory implements Serializable {
 
 	}
 
+	/**
+	 * Get a measure from person, measure type and id measure
+	 * 
+	 * @param id
+	 *            id person
+	 * @param md
+	 *            measure type
+	 * @param idmh
+	 *            id measure history
+	 * @return
+	 */
 	public static MeasureHistory getMeasureTypeById(int id, String md, int idmh) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
-		
+
 		MeasureHistory ret = em.createNamedQuery("MeasureHistory.findPersonTypeID", MeasureHistory.class)
 				.setParameter("id", id).setParameter("md", md).setParameter("idhm", idmh).getSingleResult();
 		LifeCoachDao.instance.closeConnections(em);
 		return ret;
 
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idMeasureHistory;
+		result = prime * result + ((measureDefinition == null) ? 0 : measureDefinition.hashCode());
+		result = prime * result + ((person == null) ? 0 : person.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MeasureHistory other = (MeasureHistory) obj;
+		if (idMeasureHistory != other.idMeasureHistory)
+			return false;
+		if (measureDefinition == null) {
+			if (other.measureDefinition != null)
+				return false;
+		} else if (!measureDefinition.equals(other.measureDefinition))
+			return false;
+		if (person == null) {
+			if (other.person != null)
+				return false;
+		} else if (!person.equals(other.person))
+			return false;
+		return true;
 	}
 
 }

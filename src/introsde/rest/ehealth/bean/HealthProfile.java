@@ -1,4 +1,4 @@
-package introsde.rest.ehealth.model;
+package introsde.rest.ehealth.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,12 +7,13 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import introsde.rest.ehealth.bean.MeasureTypeBean;
+import introsde.rest.ehealth.model.MeasureHistory;
 
 @XmlRootElement
 public class HealthProfile implements Serializable {
 
-	private static final long serialVersionUID = 558619596614320430L;
+
+	private static final long serialVersionUID = -7294911323864810080L;
 	private List<MeasureTypeBean> measure;
 
 	public HealthProfile() {
@@ -27,12 +28,30 @@ public class HealthProfile implements Serializable {
 		this.measure = measure;
 	}
 
+	/**
+	 * get a MeasureHistory and put into
+	 * a HealthProfile.
+	 * @param measure
+	 * List of MeasureHistory entity
+	 * @return
+	 * a HealthProfile structure
+	 * 
+	 */
 	public static HealthProfile getHealthProfileFromMeasure(MeasureHistory measure) {
 		ArrayList<MeasureHistory> m = new ArrayList<MeasureHistory>();
 		m.add(measure);
 		return getHealthProfileFromMeasureList(m);
 	}
 
+	/**
+	 * get a List of MeasureHistory and put into
+	 * a HealthProfile.
+	 * 
+	 * @param measure
+	 * List of MeasureHistory entity
+	 * @return
+	 *  a HealthProfile structure
+	 */
 	public static HealthProfile getHealthProfileFromMeasureList(List<MeasureHistory> measure) {
 		HealthProfile hp = null;
 		List<MeasureTypeBean> lmb = new ArrayList<MeasureTypeBean>();
@@ -49,4 +68,11 @@ public class HealthProfile implements Serializable {
 		}
 		return hp;
 	}
+
+	@Override
+	public String toString() {
+		return "HealthProfile [measure=" + measure + "]";
+	}
+	
+	
 }

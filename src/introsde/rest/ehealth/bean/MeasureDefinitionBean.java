@@ -1,5 +1,6 @@
 package introsde.rest.ehealth.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import introsde.rest.ehealth.model.MeasureDefinition;
 
 @XmlRootElement(name = "measureTypes")
-public class MeasureDefinitionBean {
+public class MeasureDefinitionBean implements Serializable{
 
+
+	private static final long serialVersionUID = -6959456534581259572L;
 	private List<String> measureType = new ArrayList<String>();
 
 	@XmlElement(name = "measureType")
@@ -26,6 +29,11 @@ public class MeasureDefinitionBean {
 
 	}
 
+	/**
+	 * get all measure names
+	 * @return
+	 * list  of String 
+	 */
 	public static List<String> getAll() {
 		List<String> mtl = null;
 		List<MeasureDefinition> mdl = MeasureDefinition.getAll();
@@ -36,6 +44,11 @@ public class MeasureDefinitionBean {
 			}
 		}
 		return mtl;
+	}
+
+	@Override
+	public String toString() {
+		return "MeasureDefinitionBean [measureType=" + measureType + "]";
 	}
 
 }

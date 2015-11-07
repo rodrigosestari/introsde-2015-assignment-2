@@ -1,4 +1,7 @@
 introsde.rest.client.json
 introsde.rest.client.xml
+introsde.rest.ehealth
 introsde.rest.ehealth.bean
+introsde.rest.ehealth.dao
+introsde.rest.ehealth.model
 introsde.rest.ehealth.resources

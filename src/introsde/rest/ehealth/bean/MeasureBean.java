@@ -1,5 +1,6 @@
 package introsde.rest.ehealth.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import introsde.rest.ehealth.model.HealthProfile;
 import introsde.rest.ehealth.model.MeasureHistory;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,7 +15,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 @XmlRootElement(name = "measure")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "mid", "value", "created" })
-public class MeasureBean {
+public class MeasureBean implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9163938455236472286L;
+
 	private Integer mid;
 
 	private double value;

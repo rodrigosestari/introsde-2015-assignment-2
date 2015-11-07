@@ -28,7 +28,9 @@ import introsde.rest.ehealth.dao.LifeCoachDao;
 		@NamedQuery(name = "MeasureDefinition.findAll", query = "SELECT h FROM MeasureDefinition h") })
 @XmlRootElement
 public class MeasureDefinition implements Serializable {
-	private static final long serialVersionUID = 1L;
+	
+
+	private static final long serialVersionUID = -7320798646552225232L;
 
 	@Id
 	@GeneratedValue(generator = "sqlite_measuredef")
@@ -63,6 +65,11 @@ public class MeasureDefinition implements Serializable {
 		return p;
 	}
 
+	/**
+	 * get all meausere types
+	 * 
+	 * @return list of MeasureDefinition
+	 */
 	public static List<MeasureDefinition> getAll() {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		List<MeasureDefinition> list = em.createNamedQuery("MeasureDefinition.findAll", MeasureDefinition.class)
@@ -71,6 +78,13 @@ public class MeasureDefinition implements Serializable {
 		return list;
 	}
 
+	/**
+	 * insert a new measure type
+	 * 
+	 * @param p
+	 *            MeasureDefinition to insert
+	 * @return MeasureDefinition inserted
+	 */
 	public static MeasureDefinition insertMeasureDefinition(MeasureDefinition p) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -86,6 +100,13 @@ public class MeasureDefinition implements Serializable {
 		return p;
 	}
 
+	/**
+	 * update a mesuare type
+	 * 
+	 * @param p
+	 *            object MeasureDefinition to update
+	 * @return object MeasureDefinition updated
+	 */
 	public static MeasureDefinition updateMeasureDefinition(MeasureDefinition p) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -102,6 +123,12 @@ public class MeasureDefinition implements Serializable {
 		return p;
 	}
 
+	/**
+	 * remove a measure type from db
+	 * 
+	 * @param p
+	 *            object MeasureDefinition
+	 */
 	public static void removeMeasureDefinition(MeasureDefinition p) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -117,6 +144,13 @@ public class MeasureDefinition implements Serializable {
 		LifeCoachDao.instance.closeConnections(em);
 	}
 
+	/**
+	 * Get a measure type from your name
+	 * 
+	 * @param name
+	 *            measure name type
+	 * @return object MeasureDefinition
+	 */
 	static public MeasureDefinition getMeasureDefinitionByName(String name) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 
@@ -132,7 +166,6 @@ public class MeasureDefinition implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + idMeasureDef;
-		result = prime * result + ((measureName == null) ? 0 : measureName.hashCode());
 		return result;
 	}
 
@@ -147,12 +180,9 @@ public class MeasureDefinition implements Serializable {
 		MeasureDefinition other = (MeasureDefinition) obj;
 		if (idMeasureDef != other.idMeasureDef)
 			return false;
-		if (measureName == null) {
-			if (other.measureName != null)
-				return false;
-		} else if (!measureName.equals(other.measureName))
-			return false;
 		return true;
 	}
 
+
+	
 }

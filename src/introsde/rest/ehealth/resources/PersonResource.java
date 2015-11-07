@@ -14,13 +14,13 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import introsde.rest.ehealth.bean.PersonBean;
 import introsde.rest.ehealth.model.Person;
-import introsde.rest.ehealth.model.PersonBean;
 
 @Stateless // only used if the the application is deployed in a Java EE
-			// container
+// container
 @LocalBean // only used if the the application is deployed in a Java EE
-			// container
+// container
 public class PersonResource {
 	@Context
 	UriInfo uriInfo;
@@ -29,7 +29,7 @@ public class PersonResource {
 	int id;
 
 	EntityManager entityManager; // only used if the application is deployed in
-									// a Java EE container
+	// a Java EE container
 
 	public PersonResource(UriInfo uriInfo, Request request, int id, EntityManager em) {
 		this.uriInfo = uriInfo;
@@ -50,6 +50,7 @@ public class PersonResource {
 	 * measures means current health profile)
 	 * 
 	 * @return
+	 * the PersonBean
 	 */
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
@@ -60,6 +61,7 @@ public class PersonResource {
 			person = this.getPersonById(id);
 
 			if ((person == null) || (person.getIdPerson() == null)){
+				// if dont found
 				return Response.status(Response.Status.NOT_FOUND).build();
 			} else {
 				return Response.ok().entity(person).build();
@@ -83,13 +85,18 @@ public class PersonResource {
 		System.out.println("--> Updating Person... " + this.id);
 		System.out.println("--> " + person.toString());
 		Response res;
-		Person existing = Person.getPersonById(this.id);
-		if (existing == null) {
-			res = Response.noContent().build();
-		} else {
-			person.setIdPerson(existing.getIdPerson());
-			Person.updatePerson(person);
-			res = Response.created(uriInfo.getAbsolutePath()).build();
+		try{
+			Person existing = Person.getPersonById(this.id);
+			if (existing == null) {
+				res = Response.noContent().build();
+			} else {
+				//set the new id person
+				person.setIdPerson(existing.getIdPerson());
+				Person.updatePerson(person);
+				res = Response.created(uriInfo.getAbsolutePath()).build();
+			}
+		} catch (Exception e) {
+			return Response.serverError().build();
 		}
 		return res;
 	}
@@ -103,13 +110,13 @@ public class PersonResource {
 		try {
 			Person c = Person.getPersonById(id);
 			if (c == null)
-					return Response.noContent().build();
-		
+				return Response.noContent().build();
+
 			Person.removePerson(c);
 		} catch (Exception e) {
 			return Response.serverError().build();
 		}
-		
+
 		return Response.ok().build();
 	}
 

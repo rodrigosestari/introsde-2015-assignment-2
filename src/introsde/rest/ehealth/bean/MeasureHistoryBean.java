@@ -13,7 +13,8 @@ import introsde.rest.ehealth.model.Person;
 @XmlRootElement(name = "measureHistory")
 public class MeasureHistoryBean implements Serializable {
 
-	private static final long serialVersionUID = 558619596614320430L;
+
+	private static final long serialVersionUID = 3521996173451216932L;
 	private List<MeasureBean> measure;
 
 	public MeasureHistoryBean() {
@@ -28,12 +29,28 @@ public class MeasureHistoryBean implements Serializable {
 		this.measure = measure;
 	}
 
+	/**
+	 * get a list of MeasureHistory from MeasureHistory
+	 * 
+	 * @param measure
+	 *            object MeasureHistory
+	 * @return object MeasureHistoryBean
+	 * 
+	 */
 	public static MeasureHistoryBean getHistoryBeanFromMeasure(MeasureHistory measure) {
 		ArrayList<MeasureHistory> m = new ArrayList<MeasureHistory>();
 		m.add(measure);
 		return getHistoryBeanFromMeasureList(m);
 	}
 
+	/**
+	 * trasnform a list of MeasureHistory into MeasureHistoryBean
+	 * 
+	 * @param measure
+	 *            list of MeasureHistory
+	 * @return object MeasureHistoryBean
+	 * 
+	 */
 	public static MeasureHistoryBean getHistoryBeanFromMeasureList(List<MeasureHistory> measure) {
 		MeasureHistoryBean hp = null;
 		List<MeasureBean> lmb = new ArrayList<MeasureBean>();
@@ -51,4 +68,10 @@ public class MeasureHistoryBean implements Serializable {
 		}
 		return hp;
 	}
+
+	@Override
+	public String toString() {
+		return "MeasureHistoryBean [measure=" + measure + "]";
+	}
+
 }

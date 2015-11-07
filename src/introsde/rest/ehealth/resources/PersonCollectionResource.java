@@ -26,10 +26,10 @@ import javax.ws.rs.core.UriInfo;
 import introsde.rest.ehealth.bean.MeasureBean;
 import introsde.rest.ehealth.bean.MeasureHistoryBean;
 import introsde.rest.ehealth.bean.PeopleBean;
+import introsde.rest.ehealth.bean.PersonBean;
 import introsde.rest.ehealth.model.MeasureDefinition;
 import introsde.rest.ehealth.model.MeasureHistory;
 import introsde.rest.ehealth.model.Person;
-import introsde.rest.ehealth.model.PersonBean;
 
 @Stateless // will work only inside a Java EE application
 @LocalBean // will work only inside a Java EE application
@@ -58,6 +58,7 @@ public class PersonCollectionResource {
 	 * the root element "people")
 	 * 
 	 * @return
+	 * List of PersonBean in DB
 	 */
 	@GET
 	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -68,17 +69,16 @@ public class PersonCollectionResource {
 			System.out.println("Getting list of people...");
 			people = Person.getAllBean(true);			
 			if (people == null) {
-				return Response.noContent().build();
+				return Response.status(Response.Status.NOT_FOUND).build();
 			} else {
 				peopleBean =  new PeopleBean();
-				peopleBean.setMeasureType(people);
+				peopleBean.setPerson(people);
 				return Response.ok().entity(peopleBean).build();
 			}
-
 		} catch (Exception e) {
-		  return Response.serverError().build();
+			return Response.serverError().build();
 		}
-		
+
 	}
 
 	// retuns the number of people
@@ -99,7 +99,9 @@ public class PersonCollectionResource {
 	 * create also those measurements for the new person).
 	 * 
 	 * @param person
+	 * a PersonBean to insert in DB
 	 * @return
+	 * the PersonBean created
 	 * @throws IOException
 	 */
 	@POST
@@ -108,7 +110,7 @@ public class PersonCollectionResource {
 	public Response newPerson(PersonBean person) throws IOException {
 		PersonBean pb = null;
 		try {
-			System.out.println("Creating new person...123");
+			System.out.println("Creating new person...");
 			pb = Person.insertPersonBean(person);
 			if (pb == null) {
 				return Response.noContent().build();
@@ -136,8 +138,11 @@ public class PersonCollectionResource {
 	 * by {id}
 	 * 
 	 * @param id
+	 * id of person
 	 * @param md
+	 * measure type
 	 * @return
+	 * MeasureHistoryBean values
 	 */
 	@GET
 	@Path("{personId}/{measureType}")
@@ -145,10 +150,10 @@ public class PersonCollectionResource {
 	public Response getMeasurement(@PathParam("personId") int id, @PathParam("measureType") String md) {
 		MeasureHistoryBean mhb = null;
 		try {
-			System.out.println("Reading measurement from DB with idp: " + id + " for " + md);
+			System.out.println("Getting measurement from DB with Person: " + id + " measure: " + md);
 			mhb = MeasureHistoryBean.getHistoryBeanFromMeasureList(MeasureHistory.getAllForMeasureType(id, md));
 			if (mhb == null) {
-				return Response.noContent().build();
+				return Response.status(Response.Status.NOT_FOUND).build();
 			} else {
 				return Response.ok().entity(mhb).build();
 			}
@@ -163,9 +168,13 @@ public class PersonCollectionResource {
 	 * by {id}
 	 * 
 	 * @param id
+	 * id person
 	 * @param md
+	 * measure type
 	 * @param mid
+	 * id measure
 	 * @return
+	 * MeasureHistoryBean values
 	 */
 	@GET
 	@Path("{personId}/{measureType}/{mid}")
@@ -175,13 +184,13 @@ public class PersonCollectionResource {
 
 		MeasureHistoryBean mhb = null;
 		try {
-			System.out.println("Reading measurement from DB with idp: " + id + " for " + md);
+			System.out.println("Getting measurement from DB with Person: " + id + " measure: " + md + " id measure:"+mid);
 			MeasureHistory mh = MeasureHistory.getMeasureTypeById(id, md, mid);
 			ArrayList<MeasureHistory> l = new ArrayList<MeasureHistory>();
 			l.add(mh);
 			mhb = MeasureHistoryBean.getHistoryBeanFromMeasureList(l);
 			if (mhb == null) {
-				return Response.noContent().build();
+				return Response.status(Response.Status.NOT_FOUND).build();
 			} else {
 				return Response.ok().entity(mhb).build();
 			}
@@ -196,9 +205,13 @@ public class PersonCollectionResource {
 	 * the old value in the history
 	 * 
 	 * @param id
+	 * id person
 	 * @param md
+	 * measure type
 	 * @param mb
+	 * new MeasureBean
 	 * @return
+	 * the MeasureBean created
 	 * @throws IOException
 	 */
 	@POST
@@ -214,17 +227,20 @@ public class PersonCollectionResource {
 
 			Person p = Person.getPersonById(id);
 			if (null == p) {
+				//if person dont found, come created it
 				p = new Person();
 				p.setIdPerson(id);
 				p = Person.insertPerson(p);
 			}
 			MeasureDefinition m = MeasureDefinition.getMeasureDefinitionByName(md);
 			if (null == m) {
+				//if measure dont found, come created it
 				m = new MeasureDefinition();
 				m.setMeasureName(md);
 				m = MeasureDefinition.insertMeasureDefinition(m);
 			}
 
+			//create new measure
 			MeasureHistory mh = new MeasureHistory();
 			mh.setCreated(Person.stringToDate(mb.getCreated()));
 			mh.setMeasureDefinition(m);
