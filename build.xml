@@ -83,9 +83,9 @@
             <echo message="${build.dir} has been deleted" />
             <delete dir="${src.dir}/${xjc.package}" />
             <echo message="${src.dir}/${xjc.package} has been deleted" />
-            <delete file="resources/client-server-json.log" />
+            <delete file="client-server-json.log" />
             <echo message="json log has been deleted" />
-        	<delete file="resources/client-server-xml.log" />
+        	<delete file="client-server-xml.log" />
         	<echo message="xml log has been deleted" />
         </target>
         <target name="install" depends="clean, init">
@@ -133,7 +133,7 @@
     	  </target>
     	
   	  <target name="execute.client" depends="install, xmlRequests, jsonRequests">
-  	    <echo message="Executing Assignment 2" />
+  	    <echo message="End client requests - Assignment 2" />
   	  </target>    	
     	
         <target name="start">

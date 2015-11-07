@@ -1,0 +1,111 @@
+URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2 
+ 
+ ------------- 
+
+ 
+ Request #1: GET [/assignment2/person] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> Result:OK 
+=> HTTP Status: 200 
+{"person":[{"idPerson":3,"firstname":"New_Firstname Sat Nov 07 20:14:57 CET 2015","lastname":"New_LastnameSat Nov 07 20:13:26 CET 2015","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"weigth","value":78.9},{"measure":"heigth","value":129.8}]}},{"idPerson":2,"firstname":"Jose","lastname":"Maria","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"heigth","value":102.0},{"measure":"weigth","value":66.9}]}},{"idPerson":1,"firstname":"Jon","lastname":"Walker","birthdate":"1971-09-24","healthProfile":{"measureType":[{"measure":"weigth","value":34.0},{"measure":"heigth","value":172.4}]}}]} 
+ 
+ ------------- 
+
+ 
+ Request #2: GET [/assignment2/person/3] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> Result:OK 
+=> HTTP Status: 200 
+{"idPerson":3,"firstname":"New_Firstname Sat Nov 07 20:14:57 CET 2015","lastname":"New_LastnameSat Nov 07 20:13:26 CET 2015","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"weigth","value":78.9},{"measure":"heigth","value":129.8}]}} 
+ 
+ ------------- 
+
+ 
+ Request #3: [PUT] [/assignment2/person/3] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+{"firstname":"New_FirstnameSat Nov 07 20:15:07 CET 2015","idPerson":3,"birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"weigth","value":78.9},{"measure":"heigth","value":129.8}]},"lastname":"New_LastnameSat Nov 07 20:15:07 CET 2015"} 
+=> Result:OK 
+=> HTTP Status: 201 
+ 
+ 
+ ------------- 
+
+ 
+ Request #4: [POST] [/assignment2/person] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+{  "healthProfile": {  "measureType": [  {  "measure": "weigth",  "value": 78.9  },  {  "measure": "heigth",  "value": 129.8  }   ]  },  "lastname": "Rodrigo Sat Nov 07 20:15:07 CET 2015 ",  "birthdate": "2016-03-22",  "firstname": "Json"  }  
+=> Result:OK 
+=> HTTP Status: 200 
+{"idPerson":213,"firstname":"Json","lastname":"Rodrigo Sat Nov 07 20:15:07 CET 2015 ","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"weigth","value":78.9},{"measure":"heigth","value":129.8}]}} 
+ 
+ ------------- 
+
+ 
+ Request #5: [DELETE] [/assignment2/person/213] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> HTTP Status: 200 
+ 
+
+ Request #5: GET [/assignment2/person/213] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML] 
+=> Result:OK 
+=> HTTP Status: 404 
+ 
+ 
+ ------------- 
+
+ 
+ Request #6: GET [/assignment2/measureTypes/] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> Result:OK 
+=> HTTP Status: 200 
+{"measureType":["weigth","heigth","bloodpressure"]} 
+ 
+ ------------- 
+
+ 
+
+ Request #7: GET [/assignment2/person/3/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> HTTP Status: 200 
+{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":23,"value":54.2,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":26,"value":23.9,"created":"2015-02-17"},{"mid":27,"value":71.3,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"}]} 
+
+ Request #7: GET [/assignment2/person/3/heigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> HTTP Status: 200 
+{"measure":[{"mid":22,"value":34.5,"created":"2015-02-17"},{"mid":25,"value":172.4,"created":"2015-02-17"},{"mid":28,"value":129.8,"created":"2015-02-17"}]} 
+
+ Request #7: GET [/assignment2/person/3/bloodpressure] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> HTTP Status: 404 
+ 
+
+ Request #7: GET [/assignment2/person/1/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> HTTP Status: 200 
+{"measure":[{"mid":1,"value":54.2,"created":"2014-11-18"},{"mid":2,"value":78.9,"created":"2014-11-18"},{"mid":4,"value":72.0,"created":"2014-11-18"},{"mid":5,"value":40.3,"created":"2015-02-17"},{"mid":7,"value":32.0,"created":"2015-02-17"},{"mid":84,"value":34.0,"created":"2015-11-04"},{"mid":134,"value":34.0,"created":"2015-11-04"},{"mid":184,"value":34.0,"created":"2015-11-04"},{"mid":234,"value":44.1,"created":"2015-02-17"},{"mid":237,"value":44.1,"created":"2015-02-17"},{"mid":240,"value":44.1,"created":"2015-02-17"},{"mid":243,"value":44.1,"created":"2015-02-17"},{"mid":246,"value":34.0,"created":"2015-11-05"},{"mid":249,"value":34.0,"created":"2015-11-05"},{"mid":252,"value":44.1,"created":"2015-02-17"},{"mid":255,"value":34.0,"created":"2015-11-05"}]} 
+
+ Request #7: GET [/assignment2/person/1/heigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> HTTP Status: 200 
+{"measure":[{"mid":3,"value":172.0,"created":"2014-11-18"},{"mid":6,"value":172.4,"created":"2015-02-17"}]} 
+
+ Request #7: GET [/assignment2/person/1/bloodpressure] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> HTTP Status: 404 
+ 
+=> Result:OK 
+ 
+ ------------- 
+
+ 
+ Request #8: GET [/assignment2/person/1/weigth/1] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> Result:OK 
+=> HTTP Status: 200 
+{"measure":[{"mid":1,"value":54.2,"created":"2014-11-18"}]} 
+ 
+ ------------- 
+
+ 
+ Request #9: GET [/assignment2/person/1/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> HTTP Status: 200 
+{"measure":[{"mid":1,"value":54.2,"created":"2014-11-18"},{"mid":2,"value":78.9,"created":"2014-11-18"},{"mid":4,"value":72.0,"created":"2014-11-18"},{"mid":5,"value":40.3,"created":"2015-02-17"},{"mid":7,"value":32.0,"created":"2015-02-17"},{"mid":84,"value":34.0,"created":"2015-11-04"},{"mid":134,"value":34.0,"created":"2015-11-04"},{"mid":184,"value":34.0,"created":"2015-11-04"},{"mid":234,"value":44.1,"created":"2015-02-17"},{"mid":237,"value":44.1,"created":"2015-02-17"},{"mid":240,"value":44.1,"created":"2015-02-17"},{"mid":243,"value":44.1,"created":"2015-02-17"},{"mid":246,"value":34.0,"created":"2015-11-05"},{"mid":249,"value":34.0,"created":"2015-11-05"},{"mid":252,"value":44.1,"created":"2015-02-17"},{"mid":255,"value":34.0,"created":"2015-11-05"}]} 
+
+ Request #9: [POST] [/assignment2/person/1/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+{  "value": 44.1,  "created": "2015-02-17" }   
+=> HTTP Status: 200 
+{"measure":[{"mid":1,"value":54.2,"created":"2014-11-18"},{"mid":2,"value":78.9,"created":"2014-11-18"},{"mid":4,"value":72.0,"created":"2014-11-18"},{"mid":5,"value":40.3,"created":"2015-02-17"},{"mid":7,"value":32.0,"created":"2015-02-17"},{"mid":84,"value":34.0,"created":"2015-11-04"},{"mid":134,"value":34.0,"created":"2015-11-04"},{"mid":184,"value":34.0,"created":"2015-11-04"},{"mid":234,"value":44.1,"created":"2015-02-17"},{"mid":237,"value":44.1,"created":"2015-02-17"},{"mid":240,"value":44.1,"created":"2015-02-17"},{"mid":243,"value":44.1,"created":"2015-02-17"},{"mid":246,"value":34.0,"created":"2015-11-05"},{"mid":249,"value":34.0,"created":"2015-11-05"},{"mid":252,"value":44.1,"created":"2015-02-17"},{"mid":255,"value":34.0,"created":"2015-11-05"},{"mid":258,"value":44.1,"created":"2015-02-17"}]} 
+
+ Request #9: GET [/assignment2/person/1/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
+=> Result:OK 
+=> HTTP Status: 200 
+{"measure":[{"mid":1,"value":54.2,"created":"2014-11-18"},{"mid":2,"value":78.9,"created":"2014-11-18"},{"mid":4,"value":72.0,"created":"2014-11-18"},{"mid":5,"value":40.3,"created":"2015-02-17"},{"mid":7,"value":32.0,"created":"2015-02-17"},{"mid":84,"value":34.0,"created":"2015-11-04"},{"mid":134,"value":34.0,"created":"2015-11-04"},{"mid":184,"value":34.0,"created":"2015-11-04"},{"mid":234,"value":44.1,"created":"2015-02-17"},{"mid":237,"value":44.1,"created":"2015-02-17"},{"mid":240,"value":44.1,"created":"2015-02-17"},{"mid":243,"value":44.1,"created":"2015-02-17"},{"mid":246,"value":34.0,"created":"2015-11-05"},{"mid":249,"value":34.0,"created":"2015-11-05"},{"mid":252,"value":44.1,"created":"2015-02-17"},{"mid":255,"value":34.0,"created":"2015-11-05"},{"mid":258,"value":44.1,"created":"2015-02-17"}]} 
+ 
+ END 

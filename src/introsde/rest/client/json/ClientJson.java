@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -42,7 +43,7 @@ public class ClientJson {
 
 	public static void main(String[] args) throws Exception {
 
-		writer = new FileWriter("resources/client-server-json.log");
+		writer = new FileWriter("client-server-json.log");
 		try {
 			try {
 				System.out.println("START client Json");
@@ -95,7 +96,7 @@ public class ClientJson {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person");
 
-		write("\n \n Request #1: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n \n Request #1: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
 		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		int httpStatus =response.getStatus();     		
@@ -115,6 +116,7 @@ public class ClientJson {
 		lastPerson = people.getJSONObject(people.length() - 1).getInt("idPerson");
 
 		write("=> HTTP Status: " +httpStatus);
+		write(json);
 
 	}
 
@@ -134,7 +136,7 @@ public class ClientJson {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+firstPerson);
 
-		write("\n \n Request #2: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n \n Request #2: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
 		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(); //content-type request //accept accept
 		int httpStatus =response.getStatus();     		
@@ -146,6 +148,8 @@ public class ClientJson {
 			write("=> Result:ERROR");
 		}
 		write("=> HTTP Status: " +httpStatus);
+		write(jsonFistPerson);
+		
 
 
 	}
@@ -164,17 +168,18 @@ public class ClientJson {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+firstPerson);
 
-		write("\n \n Request #3: [PUT] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n \n Request #3: [PUT] ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
 
+		Date data = new Date();
 		JSONObject j = new JSONObject(jsonFistPerson);
-		j.put("firstname", "New Firstname");
-		j.put("lastname", "Changed lastname json");
+		j.put("firstname", "New_Firstname"+data.toString());
+		j.put("lastname", "New_Lastname"+data.toString());
 
-
-		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(Entity.json(jsonFistPerson));
+		write(j.toString());
+		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(Entity.json(j.toString()));
 		int httpStatus =response.getStatus(); 
-
+		String json = response.readEntity(String.class);
 
 		if ((httpStatus == 201)){ //created
 			write("=> Result:OK");
@@ -183,7 +188,7 @@ public class ClientJson {
 		}
 
 		write("=> HTTP Status: " +httpStatus);
-
+		write(json);
 	}
 
 
@@ -207,8 +212,9 @@ public class ClientJson {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person");
 
-		write("\n \n Request #4: [POST] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n \n Request #4: [POST] ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
+		Date data =  new Date();
 		String newPerson = "{ "
 				+" \"healthProfile\": { "
 				+" \"measureType\": [ "
@@ -222,10 +228,11 @@ public class ClientJson {
 				+" } "
 				+"  ] "
 				+" }, "
-				+" \"lastname\": \"Caprese\", "
+				+" \"lastname\": \"Rodrigo "+data.toString() +" \", "
 				+" \"birthdate\": \"2016-03-22\", "
-				+" \"firstname\": \"Changed Name\" "
+				+" \"firstname\": \"Json\" "
 				+" } ";
+		write(newPerson);
 				
 				Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(Entity.json(newPerson));
 				int httpStatus =response.getStatus();     		
@@ -257,18 +264,18 @@ public class ClientJson {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson);
 
-		write("\n \n Request #5: [DELETE] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n \n Request #5: [DELETE] ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
 		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).delete();
-		int httpStatus =response.getStatus(); 
-		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		int httpStatus =response.getStatus();     		
 		String json = response.readEntity(String.class);
 		//	write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
+		write(json);
 
 
 		service = client.target(getBaseURI()).path("person/"+newIdPerson);
-		write("\n Request #5: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n Request #5: GET ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
 		response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		httpStatus =response.getStatus();
 		json = response.readEntity(String.class);
@@ -279,6 +286,7 @@ public class ClientJson {
 			write("=> Result:ERROR");
 		}
 		write("=> HTTP Status: " +httpStatus);
+		write(json);
 
 	}
 
@@ -299,7 +307,7 @@ public class ClientJson {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("measureTypes/");
 
-		write("\n \n Request #6: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n \n Request #6: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
 		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		int httpStatus =response.getStatus();     		
@@ -318,6 +326,7 @@ public class ClientJson {
 		for (int i = 0; i < ja.length(); i++) {			
 			measure.add(ja.getString(i));
 		}
+		write(json);
 
 	}
 
@@ -334,7 +343,7 @@ public class ClientJson {
 		boolean trovato = false;
 		for (String mt : measure) {
 			service = client.target(getBaseURI()).path("person/"+idPerson+"/"+mt);
-			write("\n Request #7: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+			write("\n Request #7: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 			response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 			int httpStatus =response.getStatus(); 
 			json = response.readEntity(String.class);
@@ -358,11 +367,8 @@ public class ClientJson {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-			//if(trovato)
-			//  write("=> Result:OK");
-			//else
-			//write("=> Result:ERROR");
 			write("=> HTTP Status: " +httpStatus);
+			write(json);
 
 		}
 
@@ -406,10 +412,11 @@ public class ClientJson {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType+"/"+measure_id);
 
-		write("\n \n Request #8: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n \n Request #8: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
 		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		int httpStatus =response.getStatus(); 
+		String json = response.readEntity(String.class);
 
 		if(httpStatus == 200){
 			write("=> Result:OK");
@@ -417,6 +424,7 @@ public class ClientJson {
 			write("=> Result:ERROR");
 		}
 		write("=> HTTP Status: " +httpStatus);
+		write(json);
 	}
 
 
@@ -438,7 +446,7 @@ public class ClientJson {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
-		write("\n \n Request #9: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n \n Request #9: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
 		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		int httpStatus =response.getStatus(); 		    		
@@ -446,32 +454,30 @@ public class ClientJson {
 		JSONObject j = new JSONObject(json);
 		countMeasure = j.getJSONArray("measure").length();
 
-		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
-		//	write("=> Result:"+responseStatus);
-		write("=> HTTP Status: " +httpStatus);
-
-
-		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
-
-		write("\n Request #9: [POST] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
-		json =
-		 "{ "
-    	+ " \"value\": 44.1, "
-    	+ " \"created\": \"2015-02-17\" "
-       +"}  ";
-
-				
-		response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(Entity.json(json));
-		httpStatus =response.getStatus();
-		responseStatus =response.getStatusInfo().getReasonPhrase();    		
-		//write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
 		write(json);
 
 
 		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
-		write("\n Request #9: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_JSON] Content-type: [APPLICATION_JSON]");
+		write("\n Request #9: [POST] ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
+		json =
+		 "{ "
+    	+ " \"value\": 44.1, "
+    	+ " \"created\": \"2015-02-17\" "
+       +"}  ";
+		write(json);
+				
+		response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(Entity.json(json));
+		httpStatus =response.getStatus();
+		json = response.readEntity(String.class);
+		write("=> HTTP Status: " +httpStatus);
+		write(json);
+
+
+		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
+
+		write("\n Request #9: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 		response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		httpStatus =response.getStatus(); 		    		
 		json = response.readEntity(String.class);
@@ -484,6 +490,7 @@ public class ClientJson {
 			write("=> Result:ERROR");
 		}
 		write("=> HTTP Status: " +httpStatus);
+		write(json);
 
 	}
 

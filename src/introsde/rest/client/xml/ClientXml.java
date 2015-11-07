@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -70,7 +71,7 @@ public class ClientXml {
 
 	public static void main(String[] args) throws Exception {
 
-		writer = new FileWriter("resources/client-server-xml.log");
+		writer = new FileWriter("client-server-xml.log");
 		try {
 			try {
 				System.out.println("START client XML");
@@ -121,7 +122,7 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person");
 
-		write("\n \n Request #1: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n \n Request #1: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		int httpStatus =response.getStatus();     		
@@ -141,6 +142,7 @@ public class ClientXml {
 		lastPerson = Integer.parseInt(n2.item(0).getNodeValue());
 
 		write("=> HTTP Status: " +httpStatus);
+		write(xml);
 
 	}
 
@@ -159,7 +161,7 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+firstPerson);
 
-		write("\n \n Request #2: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n \n Request #2: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get(); //content-type request //accept accept
 		int httpStatus =response.getStatus();     		
@@ -171,6 +173,7 @@ public class ClientXml {
 			write("=> Result:ERROR");
 		}
 		write("=> HTTP Status: " +httpStatus);
+		write(xmlFistPerson);
 
 
 	}
@@ -188,15 +191,17 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+firstPerson);
 
-		write("\n \n Request #3: [PUT] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n \n Request #3: [PUT] ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
+		Date data = new Date();
 		NodeList nl = getNodes(xmlFistPerson, "//firstname/text()");
 		String name = nl.item(0).getNodeValue();
-		xmlFistPerson = xmlFistPerson.replace(name,  "Changed Name");
+		xmlFistPerson = xmlFistPerson.replace(name,  "New_Firstname "+data.toString());
 
+		write(xmlFistPerson);
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).put(Entity.xml(xmlFistPerson));
 		int httpStatus =response.getStatus(); 
-
+		String xml = response.readEntity(String.class);
 
 		if ((httpStatus == 201)){ //created
 			write("=> Result:OK");
@@ -205,6 +210,7 @@ public class ClientXml {
 		}
 
 		write("=> HTTP Status: " +httpStatus);
+		write(xml);
 
 	}
 
@@ -224,9 +230,11 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person");
 
-		write("\n \n Request #4: [POST] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n \n Request #4: [POST] ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
-		String newPerson ="<person><firstname>Rodrigo</firstname><lastname>XML</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person>";
+		Date data = new Date();
+		String newPerson ="<person><firstname>Rodrigo "+data.toString()+"</firstname><lastname>XML</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person>";
+		write(newPerson);
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(newPerson));
 		int httpStatus =response.getStatus();     		
 		String xml = response.readEntity(String.class);
@@ -255,18 +263,16 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson);
 
-		write("\n \n Request #5: [DELETE] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n \n Request #5: [DELETE] ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).delete();
-		int httpStatus =response.getStatus(); 
-		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
+		int httpStatus =response.getStatus(); 		
 		String xml = response.readEntity(String.class);
-		//	write("=> Result:"+responseStatus);
 		write("=> HTTP Status: " +httpStatus);
-
+		write(xml);
 
 		service = client.target(getBaseURI()).path("person/"+newIdPerson);
-		write("\n Request #5: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n Request #5: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		httpStatus =response.getStatus();
 		xml = response.readEntity(String.class);
@@ -277,6 +283,7 @@ public class ClientXml {
 			write("=> Result:ERROR");
 		}
 		write("=> HTTP Status: " +httpStatus);
+		write(xml);
 
 	}
 
@@ -295,7 +302,7 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("measureTypes/");
 
-		write("\n \n Request #6: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n \n Request #6: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		int httpStatus =response.getStatus();     		
@@ -314,6 +321,7 @@ public class ClientXml {
 			String aux = n1.item(i).getNodeValue();
 			measure.add(aux);
 		}
+		write(xml);
 
 	}
 
@@ -326,7 +334,7 @@ public class ClientXml {
 		boolean trovato = false;
 		for (String mt : measure) {
 			service = client.target(getBaseURI()).path("person/"+idPerson+"/"+mt);
-			write("\n Request #7: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+			write("\n Request #7: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 			response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 			int httpStatus =response.getStatus(); 
 			xml = response.readEntity(String.class);
@@ -348,12 +356,9 @@ public class ClientXml {
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
-			}
-			//if(trovato)
-			//  write("=> Result:OK");
-			//else
-			//write("=> Result:ERROR");
+			}		
 			write("=> HTTP Status: " +httpStatus);
+			write(xml);
 
 		}
 
@@ -393,10 +398,11 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType+"/"+measure_id);
 
-		write("\n \n Request #8: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n \n Request #8: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		int httpStatus =response.getStatus(); 
+		String xml = response.readEntity(String.class);
 
 		if(httpStatus == 200){
 			write("=> Result:OK");
@@ -404,6 +410,7 @@ public class ClientXml {
 			write("=> Result:ERROR");
 		}
 		write("=> HTTP Status: " +httpStatus);
+		write(xml);
 	}
 
 	/**
@@ -422,33 +429,33 @@ public class ClientXml {
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
-		write("\n \n Request #9: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+		write("\n \n Request #9: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		int httpStatus =response.getStatus(); 		    		
 		String xml = response.readEntity(String.class);
 		NodeList n1 = getNodes(xml, "//measure");
 		countMeasure = n1.getLength();
-		String responseStatus =response.getStatusInfo().getReasonPhrase();    		
-		//	write("=> Result:"+responseStatus);
-		write("=> HTTP Status: " +httpStatus);
-
-
-		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
-
-		write("\n Request #9: [POST] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
-		xml = "<measure> <value>34</value> <created>2015-11-05</created> </measure>";
-		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xml));
-		httpStatus =response.getStatus();
-		responseStatus =response.getStatusInfo().getReasonPhrase();    		
-		//write("=> Result:"+responseStatus);
+	    	
 		write("=> HTTP Status: " +httpStatus);
 		write(xml);
 
 
 		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
-		write("\n Request #9: [GET] ["+service.getUri().getPath()+"] Accept: [APPLICATION_XML] Content-type: [APPLICATION_XML]");
+	
+		write("\n Request #9: [POST] ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
+		xml = "<measure> <value>34</value> <created>2015-11-05</created> </measure>";
+		write(xml);
+		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xml));
+		httpStatus =response.getStatus();		    	
+		write("=> HTTP Status: " +httpStatus);
+		write(xml);
+
+
+		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
+
+		write("\n Request #9: GET ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		httpStatus =response.getStatus(); 		    		
 		xml = response.readEntity(String.class);
@@ -460,6 +467,7 @@ public class ClientXml {
 			write("=> Result:ERROR");
 		}
 		write("=> HTTP Status: " +httpStatus);
+		write(xml);
 
 	}
 }
