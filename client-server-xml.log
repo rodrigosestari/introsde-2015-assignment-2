@@ -20,7 +20,7 @@ URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2
 
  
  Request #3: [PUT] [/assignment2/person/1] Accept: APPLICATION_XML Content-type: APPLICATION_XML 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><person><idPerson>1</idPerson><firstname>Changed_XML at 2015-11-08 12:28:08</firstname><lastname>Walker</lastname><birthdate>1971-09-24</birthdate><healthProfile><measureType><measure>weigth</measure><value>32.0</value></measureType><measureType><measure>heigth</measure><value>37.8</value></measureType><measureType><measure>bloodpressure</measure><value>74.0</value></measureType></healthProfile></person> 
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><person><idPerson>1</idPerson><firstname>Changed_XML at 2015-11-08 12:32:16</firstname><lastname>Walker</lastname><birthdate>1971-09-24</birthdate><healthProfile><measureType><measure>weigth</measure><value>32.0</value></measureType><measureType><measure>heigth</measure><value>37.8</value></measureType><measureType><measure>bloodpressure</measure><value>74.0</value></measureType></healthProfile></person> 
 => Result:OK 
 => HTTP Status: 201 
  
@@ -29,10 +29,10 @@ URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2
 
  
  Request #4: [POST] [/assignment2/person] Accept: APPLICATION_XML Content-type: APPLICATION_XML 
-<person><firstname>newPersonXML at 2015-11-08 12:28:08</firstname><lastname>XML</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person> 
+<person><firstname>newPersonXML at 2015-11-08 12:32:17</firstname><lastname>XML</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person> 
 => Result:OK 
 => HTTP Status: 200 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><person><idPerson>5</idPerson><firstname>newPersonXML at 2015-11-08 12:28:08</firstname><lastname>XML</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person> 
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><person><idPerson>5</idPerson><firstname>newPersonXML at 2015-11-08 12:32:17</firstname><lastname>XML</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person> 
  
  ------------- 
 
@@ -99,13 +99,13 @@ URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?><measureHistory><measure><mid>20</mid><value>23.2</value><created>2015-02-17</created></measure><measure><mid>21</mid><value>13.6</value><created>2015-02-17</created></measure><measure><mid>24</mid><value>78.9</value><created>2015-02-17</created></measure><measure><mid>29</mid><value>12.4</value><created>2015-02-17</created></measure><measure><mid>30</mid><value>78.9</value><created>2015-02-17</created></measure></measureHistory> 
 
  Request #9: [POST] [/assignment2/person/3/weigth] Accept: APPLICATION_XML Content-type: APPLICATION_XML 
-<measure> <value>79</value> <created>2015-11-08</created> </measure> 
+<measure> <value>53</value> <created>2015-11-08</created> </measure> 
 => HTTP Status: 200 
-<measure> <value>79</value> <created>2015-11-08</created> </measure> 
+<measure> <value>53</value> <created>2015-11-08</created> </measure> 
 
  Request #9: GET [/assignment2/person/3/weigth] Accept: APPLICATION_XML Content-type: APPLICATION_XML 
 => Result:OK 
 => HTTP Status: 200 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><measureHistory><measure><mid>20</mid><value>23.2</value><created>2015-02-17</created></measure><measure><mid>21</mid><value>13.6</value><created>2015-02-17</created></measure><measure><mid>24</mid><value>78.9</value><created>2015-02-17</created></measure><measure><mid>29</mid><value>12.4</value><created>2015-02-17</created></measure><measure><mid>30</mid><value>78.9</value><created>2015-02-17</created></measure><measure><mid>34</mid><value>79.0</value><created>2015-11-08</created></measure></measureHistory> 
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><measureHistory><measure><mid>20</mid><value>23.2</value><created>2015-02-17</created></measure><measure><mid>21</mid><value>13.6</value><created>2015-02-17</created></measure><measure><mid>24</mid><value>78.9</value><created>2015-02-17</created></measure><measure><mid>29</mid><value>12.4</value><created>2015-02-17</created></measure><measure><mid>30</mid><value>78.9</value><created>2015-02-17</created></measure><measure><mid>34</mid><value>53.0</value><created>2015-11-08</created></measure></measureHistory> 
  
  END 
