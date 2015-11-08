@@ -6,7 +6,7 @@ URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2
  Request #1: GET [/assignment2/person] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
 => Result:OK 
 => HTTP Status: 200 
-{"person":[{"idPerson":1,"firstname":"Changed_XML at 2015-11-08 12:19:05","lastname":"Walker","birthdate":"1971-09-24","healthProfile":{"measureType":[{"measure":"weigth","value":32.0},{"measure":"heigth","value":37.8},{"measure":"bloodpressure","value":74.0}]}},{"idPerson":2,"firstname":"Maicon","lastname":"Maria","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"heigth","value":102.0},{"measure":"weigth","value":66.9},{"measure":"bloodpressure","value":78.9}]}},{"idPerson":3,"firstname":"Anna","lastname":"Caprese","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"weigth","value":36.0},{"measure":"heigth","value":129.8},{"measure":"bloodpressure","value":71.3}]}}]} 
+{"person":[{"idPerson":1,"firstname":"Changed_XML at 2015-11-08 12:28:08","lastname":"Walker","birthdate":"1971-09-24","healthProfile":{"measureType":[{"measure":"weigth","value":32.0},{"measure":"heigth","value":37.8},{"measure":"bloodpressure","value":74.0}]}},{"idPerson":2,"firstname":"Maicon","lastname":"Maria","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"heigth","value":102.0},{"measure":"weigth","value":66.9},{"measure":"bloodpressure","value":78.9}]}},{"idPerson":3,"firstname":"Anna","lastname":"Caprese","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"weigth","value":79.0},{"measure":"heigth","value":129.8},{"measure":"bloodpressure","value":71.3}]}}]} 
  
  ------------- 
 
@@ -14,13 +14,13 @@ URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2
  Request #2: GET [/assignment2/person/1] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
 => Result:OK 
 => HTTP Status: 200 
-{"idPerson":1,"firstname":"Changed_XML at 2015-11-08 12:19:05","lastname":"Walker","birthdate":"1971-09-24","healthProfile":{"measureType":[{"measure":"weigth","value":32.0},{"measure":"heigth","value":37.8},{"measure":"bloodpressure","value":74.0}]}} 
+{"idPerson":1,"firstname":"Changed_XML at 2015-11-08 12:28:08","lastname":"Walker","birthdate":"1971-09-24","healthProfile":{"measureType":[{"measure":"weigth","value":32.0},{"measure":"heigth","value":37.8},{"measure":"bloodpressure","value":74.0}]}} 
  
  ------------- 
 
  
  Request #3: [PUT] [/assignment2/person/1] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
-{"firstname":"Changed_JSON at 2015-11-08 12:19:14","idPerson":1,"birthdate":"1971-09-24","healthProfile":{"measureType":[{"measure":"weigth","value":32},{"measure":"heigth","value":37.8},{"measure":"bloodpressure","value":74}]},"lastname":"Walker"} 
+{"firstname":"Changed_JSON at 2015-11-08 12:28:17","idPerson":1,"birthdate":"1971-09-24","healthProfile":{"measureType":[{"measure":"weigth","value":32},{"measure":"heigth","value":37.8},{"measure":"bloodpressure","value":74}]},"lastname":"Walker"} 
 => Result:OK 
 => HTTP Status: 201 
  
@@ -29,10 +29,10 @@ URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2
 
  
  Request #4: [POST] [/assignment2/person] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
-{  "healthProfile": {  "measureType": [  {  "measure": "weigth",  "value": 78.9  },  {  "measure": "heigth",  "value": 129.8  }   ]  },  "lastname": "Rodrigo Sun Nov 08 12:19:15 CET 2015 ",  "birthdate": "2016-03-22",  "firstname": "Json"  }  
+{  "healthProfile": {  "measureType": [  {  "measure": "weigth",  "value": 78.9  },  {  "measure": "heigth",  "value": 129.8  }   ]  },  "lastname": "newPersonJSON at 2015-11-08 12:28:18 ",  "birthdate": "2016-03-22",  "firstname": "Json"  }  
 => Result:OK 
 => HTTP Status: 200 
-{"idPerson":6,"firstname":"Json","lastname":"Rodrigo Sun Nov 08 12:19:15 CET 2015 ","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"weigth","value":78.9},{"measure":"heigth","value":129.8}]}} 
+{"idPerson":6,"firstname":"Json","lastname":"newPersonJSON at 2015-11-08 12:28:18 ","birthdate":"2016-03-22","healthProfile":{"measureType":[{"measure":"weigth","value":78.9},{"measure":"heigth","value":129.8}]}} 
  
  ------------- 
 
@@ -72,7 +72,7 @@ URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2
 
  Request #7: GET [/assignment2/person/3/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
 => HTTP Status: 200 
-{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"},{"mid":34,"value":36.0,"created":"2015-11-08"}]} 
+{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"},{"mid":34,"value":79.0,"created":"2015-11-08"}]} 
 
  Request #7: GET [/assignment2/person/3/heigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
 => HTTP Status: 200 
@@ -96,16 +96,16 @@ URL BASE: https://rodrigo-sestari.herokuapp.com/assignment2
  
  Request #9: GET [/assignment2/person/3/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
 => HTTP Status: 200 
-{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"},{"mid":34,"value":36.0,"created":"2015-11-08"}]} 
+{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"},{"mid":34,"value":79.0,"created":"2015-11-08"}]} 
 
  Request #9: [POST] [/assignment2/person/3/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
-{  "value": 90,  "created": "2015-11-08" }   
+{  "value": 51,  "created": "2015-11-08" }   
 => HTTP Status: 200 
-{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"},{"mid":34,"value":36.0,"created":"2015-11-08"},{"mid":37,"value":90.0,"created":"2015-11-08"}]} 
+{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"},{"mid":34,"value":79.0,"created":"2015-11-08"},{"mid":37,"value":51.0,"created":"2015-11-08"}]} 
 
  Request #9: GET [/assignment2/person/3/weigth] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON 
 => Result:OK 
 => HTTP Status: 200 
-{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"},{"mid":34,"value":36.0,"created":"2015-11-08"},{"mid":37,"value":90.0,"created":"2015-11-08"}]} 
+{"measure":[{"mid":20,"value":23.2,"created":"2015-02-17"},{"mid":21,"value":13.6,"created":"2015-02-17"},{"mid":24,"value":78.9,"created":"2015-02-17"},{"mid":29,"value":12.4,"created":"2015-02-17"},{"mid":30,"value":78.9,"created":"2015-02-17"},{"mid":34,"value":79.0,"created":"2015-11-08"},{"mid":37,"value":51.0,"created":"2015-11-08"}]} 
  
  END 

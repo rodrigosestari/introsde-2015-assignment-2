@@ -217,7 +217,8 @@ public class ClientJson {
 
 		write("\n \n Request #4: [POST] ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
-		Date data =  new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String newname = dateFormat.format(new Date());
 		String newPerson = "{ "
 				+" \"healthProfile\": { "
 				+" \"measureType\": [ "
@@ -231,7 +232,7 @@ public class ClientJson {
 				+" } "
 				+"  ] "
 				+" }, "
-				+" \"lastname\": \"Rodrigo "+data.toString() +" \", "
+				+" \"lastname\": \"newPersonJSON at "+newname +" \", "
 				+" \"birthdate\": \"2016-03-22\", "
 				+" \"firstname\": \"Json\" "
 				+" } ";

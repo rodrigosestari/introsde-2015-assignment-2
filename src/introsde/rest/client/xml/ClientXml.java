@@ -238,8 +238,9 @@ public class ClientXml {
 
 		write("\n \n Request #4: [POST] ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
-		Date data = new Date();
-		String newPerson ="<person><firstname>Rodrigo "+data.toString()+"</firstname><lastname>XML</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person>";
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String newname = dateFormat.format(new Date());
+		String newPerson ="<person><firstname>newPersonXML at "+newname+"</firstname><lastname>XML</lastname><birthdate>2000-03-22</birthdate><healthProfile><measureType><measure>heigth</measure><value>58.1</value></measureType><measureType><measure>weigth</measure><value>34.2</value></measureType></healthProfile></person>";
 		write(newPerson);
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(newPerson));
 		int httpStatus =response.getStatus();     		
