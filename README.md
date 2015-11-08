@@ -45,20 +45,20 @@ Request #6: GET /person/{id}/{measureType} should return the list of values (the
 * **Request #9:** GET /measureTypes should return the list of measures your model supports in the following formats:
 
  ```
- <measureTypes>
-        <measureType>weight</measureType>
-        <measureType>height</measureType>
-        <measureType>steps</measureType>
-        <measureType>bloodpressure</measureType>
-    </measureTypes>
+<measureTypes>
+    <measureType>weight</measureType>
+    <measureType>height</measureType>
+    <measureType>steps</measureType>
+    <measureType>bloodpressure</measureType>
+</measureTypes>
 ```
 ```
 {
    "measureType": [
-        "weight",
-        "height",
-        "steps",
-        "bloodpressure"
+      "weight",
+      "height",
+      "steps",
+      "bloodpressure"
     ]
 }
 

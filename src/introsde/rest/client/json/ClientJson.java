@@ -3,8 +3,11 @@ package introsde.rest.client.json;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -170,11 +173,11 @@ public class ClientJson {
 
 		write("\n \n Request #3: [PUT] ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
 
-
-		Date data = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String newname = dateFormat.format(new Date());
 		JSONObject j = new JSONObject(jsonFistPerson);
-		j.put("firstname", "New_Firstname"+data.toString());
-		j.put("lastname", "New_Lastname"+data.toString());
+		j.put("firstname", "Changed_JSON at "+newname);
+	
 
 		write(j.toString());
 		Response response = service.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(Entity.json(j.toString()));
@@ -461,10 +464,14 @@ public class ClientJson {
 		service = client.target(getBaseURI()).path("person/"+newIdPerson+"/"+measureType);
 
 		write("\n Request #9: [POST] ["+service.getUri().getPath()+"] Accept: APPLICATION_JSON Content-type: APPLICATION_JSON");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String dataresult = sdf.format(new Date());
+		 Random ran =  new Random();
+		Integer value = ran.nextInt(70) + 30;
 		json =
 		 "{ "
-    	+ " \"value\": 44.1, "
-    	+ " \"created\": \"2015-02-17\" "
+    	+ " \"value\": "+value+", "
+    	+ " \"created\": \""+dataresult+"\" "
        +"}  ";
 		write(json);
 				

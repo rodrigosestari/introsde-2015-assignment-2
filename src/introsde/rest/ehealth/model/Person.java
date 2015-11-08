@@ -31,7 +31,7 @@ import introsde.rest.ehealth.dao.LifeCoachDao;
  */
 @Entity // indicates that this class is an entity to persist in DB
 @Table(name = "Person") // to whole table must be persisted
-@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p ORDER BY p.idPerson DESC ")
+@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p ORDER BY p.idPerson ASC ")
 @XmlRootElement
 public class Person implements Serializable {
 

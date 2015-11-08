@@ -4,8 +4,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -193,10 +196,13 @@ public class ClientXml {
 
 		write("\n \n Request #3: [PUT] ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
 
-		Date data = new Date();
+	
 		NodeList nl = getNodes(xmlFistPerson, "//firstname/text()");
 		String name = nl.item(0).getNodeValue();
-		xmlFistPerson = xmlFistPerson.replace(name,  "New_Firstname "+data.toString());
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String newname = dateFormat.format(new Date());
+		xmlFistPerson = xmlFistPerson.replace(name,  "Changed_XML at "+newname);
 
 		write(xmlFistPerson);
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).put(Entity.xml(xmlFistPerson));
@@ -445,7 +451,11 @@ public class ClientXml {
 
 	
 		write("\n Request #9: [POST] ["+service.getUri().getPath()+"] Accept: APPLICATION_XML Content-type: APPLICATION_XML");
-		xml = "<measure> <value>34</value> <created>2015-11-05</created> </measure>";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String dataresult = sdf.format(new Date());
+		 Random ran =  new Random();
+		Integer value = ran.nextInt(70) + 30;
+		xml = "<measure> <value>"+value+"</value> <created>"+dataresult+"</created> </measure>";
 		write(xml);
 		response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xml));
 		httpStatus =response.getStatus();		    	
